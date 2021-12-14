@@ -47,6 +47,8 @@ export default class HomeView extends Vue {
             this.longitude = position.coords.longitude;
             console.log(this.location); // todo: remove debug code
 
+            this.getWeather();
+
         }, error => {
             this.gettingLocation = false;
             this.errorMessage = error.message;
@@ -57,7 +59,7 @@ export default class HomeView extends Vue {
 
     // *** Component MOUNTED lifecycle hook
     mounted() {
-        this.getWeather();
+        //
     }
 
     // *** Component methods
