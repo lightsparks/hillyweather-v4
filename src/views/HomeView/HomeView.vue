@@ -11,7 +11,7 @@
         </div>
 
         <div v-if="location">
-            We have found your location at {{ this.latitude }}, {{ this.longitude }}
+            We have found your location at lat: {{ this.latitude }}, long: {{ this.longitude }}
         </div>
 
         <div>
