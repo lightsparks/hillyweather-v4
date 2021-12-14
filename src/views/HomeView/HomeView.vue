@@ -1,6 +1,9 @@
 <template>
 
     <div v-cloak id="app">
+
+        {{ currentDate }}
+
         <div v-if="errorMessage">Sorry, but the following error occurred: {{ errorMessage }}</div>
 
         <div v-if="gettingLocation">
@@ -12,7 +15,7 @@
         </div>
 
         <div>
-            Current temperature: TODO
+            Current temperature: {{ this.day.tempNow }}
         </div>
 
 

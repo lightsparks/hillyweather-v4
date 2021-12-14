@@ -1,14 +1,16 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import axios from 'axios';
+import dayjs from 'dayjs';
 
 @Component
 export default class HomeView extends Vue {
 
     // *** Component data
+    public currentDate = dayjs().format('dddd, MMMM D, YYYY h:mm A');
     public errorMessage = '';
     public gettingLocation = false;
-    public location: Record<any, unknown> = {};
+    public location: GeolocationCoordinates = {};
     public apiCallError: Record<any, unknown> = {};
 
     public latitude = null;
@@ -17,11 +19,11 @@ export default class HomeView extends Vue {
     private baseUrl = 'https://api.openweathermap.org/data/2.5/onecall?';
     private exclude = '&exclude=minutely,hourly,alerts';
     private units = '&units=metric';
-    public todays = {
+    public day = {
         date: null,
         condition: '',
-        nowTemp: null,
-        dayTemp: null,
+        tempNow: null,
+        TempDay: null,
         minTemp: null,
         maxTemp: null,
         icon: null,
@@ -58,12 +60,12 @@ export default class HomeView extends Vue {
     }
 
     // *** Component MOUNTED lifecycle hook
-    mounted() {
+    mounted(): void {
         //
     }
 
     // *** Component methods
-    getWeather() {
+    getWeather(): void {
         const qLat = '&lat=' + this.latitude;
         const qLon = '&lon=' + this.longitude;
         const apiUrl = this.baseUrl + this.apiKey + qLat + qLon + this.exclude + this.units;
@@ -71,9 +73,9 @@ export default class HomeView extends Vue {
         axios.get(apiUrl)
             .then((response) => {
                 console.log(response);
-                Object.assign(this.todays, {
+                Object.assign(this.day, {
                     condition: response.data.current.weather[ 0 ].description,
-                    nowTemp: Math.round(response.data.current.temp),
+                    tempNow: Math.round(response.data.current.temp),
                     minTemp: Math.round(response.data.daily[ 0 ].temp.min),
                     maxTemp: Math.round(response.data.daily[ 0 ].temp.max),
                     icon: './img/' + response.data.current.weather[ 0 ].icon + '.png',
@@ -92,11 +94,6 @@ export default class HomeView extends Vue {
             console.log(this.apiCallError);
         });
 
-    }
-
-    formatDate(dt: number): string {
-        const unformattedDate = new Date(dt * 1000);
-        return unformattedDate.toLocaleDateString('nl-NL', { weekday: 'long', month: 'long', day: 'numeric' });
     }
 
 }
