@@ -15,7 +15,14 @@
         </div>
 
         <div>
-            Current temperature: {{ this.day.tempNow }}
+            <div>
+                <img :src="this.day.icon" alt="icon" class="mx-auto" transition="scale-transition" width="140px" />
+            </div>
+            Current temperature: {{ this.day.tempNow }} &#176;C <br>
+            Conditions: {{ this.day.condition }} <br>
+            Max.temp: {{ this.day.maxTemp }} &#176;C <br>
+            Min.temp: {{ this.day.minTemp }} &#176;C <br>
+
         </div>
 
 

@@ -2,11 +2,17 @@ import Vue from 'vue';
 import Component from 'vue-class-component';
 import axios from 'axios';
 import dayjs from 'dayjs';
+// import VueLoadImage from 'vue-load-image';
 
-@Component
+@Component({
+    /*components: {
+        'vue-load-image': VueLoadImage
+    }*/
+})
+
 export default class HomeView extends Vue {
 
-    // *** Component data
+    // *** Component DATA
     public currentDate = dayjs().format('dddd, MMMM D, YYYY h:mm A');
     public errorMessage = '';
     public gettingLocation = false;
@@ -34,14 +40,14 @@ export default class HomeView extends Vue {
     // *** Component CREATED lifecycle hook
     created(): void {
 
-        // First check if we support geolocation
+        // Check if we support geolocation
         if ( !('geolocation' in navigator) ) {
             this.errorMessage = 'Geolocation is not available.';
             return;
         }
 
         this.gettingLocation = true;
-        // Get position
+        // Get our current position
         navigator.geolocation.getCurrentPosition(position => {
             this.gettingLocation = false;
             this.location = position;
@@ -49,7 +55,7 @@ export default class HomeView extends Vue {
             this.longitude = position.coords.longitude;
             console.log(this.location); // todo: remove debug code
 
-            this.getWeather();
+            this.makeWeatherApiCall();
 
         }, error => {
             this.gettingLocation = false;
@@ -64,15 +70,14 @@ export default class HomeView extends Vue {
         //
     }
 
-    // *** Component methods
-    getWeather(): void {
+    // *** Component METHODS
+    makeWeatherApiCall(): void {
         const qLat = '&lat=' + this.latitude;
         const qLon = '&lon=' + this.longitude;
         const apiUrl = this.baseUrl + this.apiKey + qLat + qLon + this.exclude + this.units;
 
         axios.get(apiUrl)
             .then((response) => {
-                console.log(response);
                 Object.assign(this.day, {
                     condition: response.data.current.weather[ 0 ].description,
                     tempNow: Math.round(response.data.current.temp),
