@@ -8,10 +8,13 @@
         </div>
 
         <div v-if="location">
-            We have found your location at {{ this.location.coords.latitude }}, {{ this.location.coords.longitude }}
-            Current temperature:
-
+            We have found your location at {{ this.latitude }}, {{ this.longitude }}
         </div>
+
+        <div>
+            Current temperature: TODO
+        </div>
+
 
     </div>
 

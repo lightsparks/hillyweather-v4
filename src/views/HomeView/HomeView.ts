@@ -8,13 +8,26 @@ export default class HomeView extends Vue {
     // *** Component data
     public errorMessage = '';
     public gettingLocation = false;
-    public location = null;
-    public locationChecked = false;
+    public location: Record<any, unknown> = {};
+    public apiCallError: Record<any, unknown> = {};
+
+    public latitude = null;
+    public longitude = null;
 
     private baseUrl = 'https://api.openweathermap.org/data/2.5/onecall?';
     private exclude = '&exclude=minutely,hourly,alerts';
     private units = '&units=metric';
-    private apiKey = '&appid=d1e902b667baccdb37cfbc96ad629f00';
+    public todays = {
+        date: null,
+        condition: '',
+        nowTemp: null,
+        dayTemp: null,
+        minTemp: null,
+        maxTemp: null,
+        icon: null,
+    };
+    public week: Record<any, any> = [];
+    private apiKey = 'appid=d1e902b667baccdb37cfbc96ad629f00';
 
     // *** Component CREATED lifecycle hook
     created(): void {
@@ -30,7 +43,9 @@ export default class HomeView extends Vue {
         navigator.geolocation.getCurrentPosition(position => {
             this.gettingLocation = false;
             this.location = position;
-            console.log(position);
+            this.latitude = position.coords.latitude;
+            this.longitude = position.coords.longitude;
+            console.log(this.location); // todo: remove debug code
 
         }, error => {
             this.gettingLocation = false;
@@ -47,10 +62,14 @@ export default class HomeView extends Vue {
 
     // *** Component methods
     getWeather() {
-        axios.get(this.apiUrl)
+        const qLat = '&lat=' + this.latitude;
+        const qLon = '&lon=' + this.longitude;
+        const apiUrl = this.baseUrl + this.apiKey + qLat + qLon + this.exclude + this.units;
+
+        axios.get(apiUrl)
             .then((response) => {
-                console.log(this.apiResponse);
-                Object.assign(this.today, {
+                console.log(response);
+                Object.assign(this.todays, {
                     condition: response.data.current.weather[ 0 ].description,
                     nowTemp: Math.round(response.data.current.temp),
                     minTemp: Math.round(response.data.daily[ 0 ].temp.min),
