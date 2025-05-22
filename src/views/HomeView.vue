@@ -12,7 +12,7 @@
 </template>
 
 <script setup lang="ts">
-import { useWeatherData } from './Home'
+import { useWeatherData } from './HomeView.ts'
 
 const { weatherData } = useWeatherData()
 </script>
