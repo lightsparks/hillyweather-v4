@@ -1,8 +1,8 @@
-// src/views/Home.ts
-import { ref, onMounted } from 'vue'
+import { ref, onMounted } from 'vue';
+import type { WeatherResponse } from '../types/WeatherResponse.ts';
 
 export function useWeatherData() {
-    const weatherData = ref(null)
+    const weatherData = ref<WeatherResponse | null>(null)
 
     const lat = import.meta.env.VITE_LAT
     const lon = import.meta.env.VITE_LON
