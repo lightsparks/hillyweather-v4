@@ -1,7 +1,13 @@
 <template>
   <div>
-    <h1>Weather JSON</h1>
-    <pre>{{ weatherData }}</pre>
+    <h1>Weather Overview</h1>
+    <div v-if="weatherData">
+      <p><strong>Latitude:</strong> {{ weatherData.lat }}</p>
+      <p><strong>Longitude:</strong> {{ weatherData.lon }}</p>
+      <p><strong>Timezone:</strong> {{ weatherData.timezone }}</p>
+      <p><strong>Temperature:</strong> {{ weatherData.current.temp }} °C</p>
+    </div>
+    <p v-else>Loading...</p>
   </div>
 </template>
 
