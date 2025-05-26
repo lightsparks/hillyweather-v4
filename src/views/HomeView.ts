@@ -34,8 +34,21 @@ export function useWeatherData() {
     }
   }
 
-  // Fetch default location on load
-  fetchWeather(defaultLat, defaultLon)
+  // Use geolocation first, fallback to .env
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const lat = position.coords.latitude.toString()
+        const lon = position.coords.longitude.toString()
+        fetchWeather(lat, lon)
+      },
+      () => {
+        fetchWeather(defaultLat, defaultLon)
+      },
+    )
+  } else {
+    fetchWeather(defaultLat, defaultLon)
+  }
 
   return {
     weatherData,
