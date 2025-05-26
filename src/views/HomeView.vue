@@ -44,11 +44,22 @@
       <p><strong>Latitude:</strong> {{ weatherData.lat }}</p>
       <p><strong>Longitude:</strong> {{ weatherData.lon }}</p>
       <p><strong>Timezone:</strong> {{ weatherData.timezone }}</p>
-      <p><strong>Temperature:</strong> {{ weatherData.current?.temp }} °C</p>
-      <p><strong>Feels Like:</strong> {{ weatherData.current?.feels_like }} °C</p>
+      <p><strong>Temperature:</strong> {{ Math.round(weatherData.current?.temp) }} °C</p>
+      <p><strong>Feels Like:</strong> {{  Math.round(weatherData.current?.feels_like) }} °C</p>
       <p><strong>Condition:</strong> {{ weatherData.current?.weather[0]?.main }} {{ weatherIcon(weatherData.current?.weather[0]?.id) }}</p>
       <p><strong>Description:</strong> {{ weatherData.current?.weather[0]?.description }}</p>
-      <p><strong>Wind:</strong> {{ toKmh(weatherData.current?.wind_speed) }}, {{ windDirectionFromDegrees(weatherData.current?.wind_deg) }}</p>
+      <p>
+        <strong>Wind: </strong>
+        <span
+          class="wind-arrow"
+          :style="{ transform: `rotate(${weatherData.current?.wind_deg ?? 0}deg)` }"
+          aria-label="Wind direction"
+        >↑
+        </span>
+        {{ toKmh(weatherData.current?.wind_speed) }},
+        {{ windDirectionFromDegrees(weatherData.current?.wind_deg) }},
+        {{ beaufortScale(weatherData.current?.wind_speed) }}
+      </p>
       <p><strong>UV Index:</strong> {{ weatherData.current?.uvi }}</p>
       <p><strong>Humidity:</strong> {{ weatherData.current?.humidity }}%</p>
       <p><strong>Sunrise:</strong> {{ formatTime(weatherData.current?.sunrise) }}</p>
@@ -59,6 +70,7 @@
 </template>
 
 <script setup lang="ts">
+import './HomeView.scss'
 import { useWeatherData } from './HomeView'
 import {
   formatTime,
@@ -66,10 +78,9 @@ import {
 } from '@/utils/weatherFormat'
 import {
   windDirectionFromDegrees,
-  toKmh
+  toKmh,
+  beaufortScale
 } from '@/utils/weatherFormat'
-
-
 
 const {
   weatherData,
