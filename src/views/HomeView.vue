@@ -45,12 +45,25 @@
       <p><strong>Longitude:</strong> {{ weatherData.lon }}</p>
       <p><strong>Timezone:</strong> {{ weatherData.timezone }}</p>
       <p><strong>Temperature:</strong> {{ weatherData.current?.temp }} °C</p>
+      <p><strong>Feels Like:</strong> {{ weatherData.current?.feels_like }} °C</p>
+      <p><strong>Condition:</strong> {{ weatherData.current?.weather[0]?.main }} {{ weatherIcon(weatherData.current?.weather[0]?.id) }}</p>
+      <p><strong>Description:</strong> {{ weatherData.current?.weather[0]?.description }}</p>
+      <p><strong>UV Index:</strong> {{ weatherData.current?.uvi }}</p>
+      <p><strong>Humidity:</strong> {{ weatherData.current?.humidity }}%</p>
+      <p><strong>Sunrise:</strong> {{ formatTime(weatherData.current?.sunrise) }}</p>
+      <p><strong>Sunset:</strong> {{ formatTime(weatherData.current?.sunset) }}</p>
     </div>
+
   </div>
 </template>
 
 <script setup lang="ts">
 import { useWeatherData } from './HomeView'
+import {
+  formatTime,
+  weatherIcon
+} from '@/utils/weatherFormat'
+
 
 const {
   weatherData,
