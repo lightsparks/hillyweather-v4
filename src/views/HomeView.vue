@@ -2,9 +2,42 @@
   <div>
     <h1>Weather Overview</h1>
 
+    <div>
+      <label for="country">Search scope:</label>
+      <select id="country" v-model="selectedCountry">
+        <option value="NL">Netherlands NL</option>
+        <option value="DE">Germany DE</option>
+        <option value="BE">Belgium BE</option>
+        <option value="FR">France FR</option>
+        <option value="Global">Global 🌍</option>
+      </select>
+    </div>
+
+    <div>
+      <input
+        v-model="search"
+        @input="onSearchInput"
+        placeholder="Search city"
+      />
+      <ul v-if="suggestions.length">
+        <li
+          v-for="(city, index) in suggestions"
+          :key="index"
+          @click="selectCity(city)"
+          style="cursor: pointer"
+        >
+          {{ city.name }}, {{ city.name }}, {{ city.state ? city.state + ', ' : '' }}{{ city.country }}
+        </li>
+      </ul>
+    </div>
+
     <button @click="useMyLocation">📍 My Location</button>
 
     <div v-if="loading">Loading...</div>
+
+    <div v-if="selectedCityName">
+      <p><strong>Selected City:</strong> {{ selectedCityName }}</p>
+    </div>
 
     <div v-if="weatherData && !loading">
       <p><strong>Latitude:</strong> {{ weatherData.lat }}</p>
@@ -16,26 +49,18 @@
 </template>
 
 <script setup lang="ts">
-import { useWeatherData } from './HomeView'
+import {
+  useWeatherData
+} from './HomeView'
 
-const { weatherData, loading, fetchWeather } = useWeatherData()
-
-function useMyLocation() {
-  if (!navigator.geolocation) {
-    alert('Geolocation is not supported by your browser.')
-    return
-  }
-
-  navigator.geolocation.getCurrentPosition(
-    (position) => {
-      const lat = position.coords.latitude.toString()
-      const lon = position.coords.longitude.toString()
-      fetchWeather(lat, lon)
-    },
-    (error) => {
-      console.error('Geolocation error:', error)
-      alert('Unable to retrieve your location.')
-    },
-  )
-}
+const {
+  weatherData,
+  loading,
+  search,
+  suggestions,
+  selectedCountry,
+  onSearchInput,
+  selectCity,
+  useMyLocation
+} = useWeatherData()
 </script>
