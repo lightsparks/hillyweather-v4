@@ -15,3 +15,17 @@ export function weatherIcon(id: number | undefined): string {
   if (id > 800 && id < 900) return '☁️'
   return ''
 }
+
+export function windDirectionFromDegrees(degrees: number | undefined): string {
+  if (degrees === undefined || degrees === null) return '-'
+
+  const directions = ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE',
+    'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW']
+  const index = Math.round(degrees / 22.5) % 16
+  return directions[index]
+}
+
+export function toKmh(mps: number | undefined): string {
+  if (mps === undefined || mps === null) return '-'
+  return `${Math.round(mps * 3.6)} km/h`
+}

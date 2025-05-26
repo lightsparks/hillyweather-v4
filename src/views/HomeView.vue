@@ -48,6 +48,7 @@
       <p><strong>Feels Like:</strong> {{ weatherData.current?.feels_like }} °C</p>
       <p><strong>Condition:</strong> {{ weatherData.current?.weather[0]?.main }} {{ weatherIcon(weatherData.current?.weather[0]?.id) }}</p>
       <p><strong>Description:</strong> {{ weatherData.current?.weather[0]?.description }}</p>
+      <p><strong>Wind:</strong> {{ toKmh(weatherData.current?.wind_speed) }}, {{ windDirectionFromDegrees(weatherData.current?.wind_deg) }}</p>
       <p><strong>UV Index:</strong> {{ weatherData.current?.uvi }}</p>
       <p><strong>Humidity:</strong> {{ weatherData.current?.humidity }}%</p>
       <p><strong>Sunrise:</strong> {{ formatTime(weatherData.current?.sunrise) }}</p>
@@ -63,6 +64,11 @@ import {
   formatTime,
   weatherIcon
 } from '@/utils/weatherFormat'
+import {
+  windDirectionFromDegrees,
+  toKmh
+} from '@/utils/weatherFormat'
+
 
 
 const {
