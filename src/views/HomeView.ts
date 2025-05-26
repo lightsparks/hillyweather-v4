@@ -10,6 +10,7 @@ const defaultLon = import.meta.env.VITE_LON
 const exclude = import.meta.env.VITE_EXCLUDE
 
 export function useWeatherData() {
+  const weatherCache = new Map<string, WeatherResponse>()
   const weatherData = ref<WeatherResponse | null>(null)
   const selectedCityName = ref<string | null>(null)
   const loading = ref(false)
@@ -27,7 +28,29 @@ export function useWeatherData() {
 
   const selectedCountry = ref<'NL' | 'Global' | string>('NL')
 
+  const lastFetchedAt = ref<Record<string, number>>({})
+
   async function fetchWeather(lat: string, lon: string) {
+    const key = `${lat},${lon}`
+
+    // ⏱️ Throttle recent requests (10 minutes)
+    const now = Date.now()
+    const last = lastFetchedAt.value[key]
+    const TEN_MINUTES = 10 * 60 * 1000
+
+    if (last && now - last < TEN_MINUTES) {
+      console.log('Using throttled data for:', key)
+      weatherData.value = weatherCache.get(key)!
+      return
+    }
+
+    // ✅ Use cached data if available
+    if (weatherCache.has(key)) {
+      console.log('Using cached weather for:', key)
+      weatherData.value = weatherCache.get(key)!
+      return
+    }
+
     const url =
       baseUrl
         .replace('{lat}', lat)
@@ -41,13 +64,18 @@ export function useWeatherData() {
         console.error('Fetch failed:', res.status)
         return
       }
-      weatherData.value = await res.json()
+      const data = await res.json()
+      weatherData.value = data
+      weatherCache.set(key, data)
+      lastFetchedAt.value[key] = now
     } catch (err) {
       console.error('Failed to fetch weather:', err)
     } finally {
       loading.value = false
     }
   }
+
+  let lastSearchQuery = ''
 
   const debouncedSearch = debounce(async () => {
     if (search.value.length < 2) {
@@ -60,8 +88,15 @@ export function useWeatherData() {
       query += `,${selectedCountry.value.toLowerCase()}`
     }
 
+    // 🚫 Skip if it's the same as last search
+    if (query === lastSearchQuery) {
+      console.log('Skipping duplicate search:', query)
+      return
+    }
+    lastSearchQuery = query
+
     const res = await fetch(
-      `https://api.openweathermap.org/geo/1.0/direct?q=${query}&limit=5&appid=${apiKey}`,
+      `https://api.openweathermap.org/geo/1.0/direct?q=${query}&limit=5&appid=${apiKey}`
     )
     const data: GeoCityResult[] = await res.json()
 
@@ -90,7 +125,7 @@ export function useWeatherData() {
     suggestions.value = []
     localStorage.setItem(
       'lastSelectedCity',
-      JSON.stringify({ lat: city.lat, lon: city.lon }),
+      JSON.stringify({ lat: city.lat, lon: city.lon })
     )
   }
 
@@ -121,7 +156,6 @@ export function useWeatherData() {
     )
   }
 
-
   onMounted(() => {
     const saved = localStorage.getItem('lastSelectedCity')
     if (saved) {
@@ -136,6 +170,14 @@ export function useWeatherData() {
     useMyLocation()
   })
 
+  function clearWeatherCache() {
+    weatherCache.clear()
+    lastFetchedAt.value = {}
+    selectedCityName.value = null
+    suggestions.value = []
+    console.log('Weather cache cleared.')
+  }
+
   return {
     weatherData,
     loading,
@@ -147,5 +189,6 @@ export function useWeatherData() {
     useMyLocation,
     fetchWeather,
     selectedCityName,
+    clearWeatherCache,
   }
 }

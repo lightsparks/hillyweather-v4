@@ -26,12 +26,13 @@
           @click="selectCity(city)"
           style="cursor: pointer"
         >
-          {{ city.name }}, {{ city.name }}, {{ city.state ? city.state + ', ' : '' }}{{ city.country }}
+          {{ city.name }}{{ city.state ? ', ' + city.state : '' }}, {{ city.country }}
         </li>
       </ul>
     </div>
 
     <button @click="useMyLocation">📍 My Location</button>
+    <button @click="clearWeatherCache">🧹 Clear Weather Cache</button>
 
     <div v-if="loading">Loading...</div>
 
@@ -49,9 +50,7 @@
 </template>
 
 <script setup lang="ts">
-import {
-  useWeatherData
-} from './HomeView'
+import { useWeatherData } from './HomeView'
 
 const {
   weatherData,
@@ -61,6 +60,8 @@ const {
   selectedCountry,
   onSearchInput,
   selectCity,
-  useMyLocation
+  useMyLocation,
+  clearWeatherCache, // ✅ include this
+  selectedCityName    // ✅ include this
 } = useWeatherData()
 </script>
