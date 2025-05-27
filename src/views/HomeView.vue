@@ -1,13 +1,10 @@
 <template>
   <v-container class="home-view" fluid>
     <v-row>
-      <v-col cols="12">
-        <h1>HillyWeather v4</h1>
-      </v-col>
-
       <v-col cols="12" md="6">
         <v-select
           v-model="selectedCountry"
+          rounded="xxl"
           :items="['NL', 'DE', 'BE', 'FR', 'Global']"
           label="Search scope"
         />
