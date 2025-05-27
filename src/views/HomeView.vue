@@ -1,101 +1,102 @@
 <template>
-  <div>
-    <h1>Weather Overview</h1>
+  <v-container class="home-view" fluid>
+    <v-row>
+      <v-col cols="12">
+        <h1>HillyWeather v4</h1>
+      </v-col>
 
-    <div>
-      <label for="country">Search scope:</label>
-      <select id="country" v-model="selectedCountry">
-        <option value="NL">Netherlands NL</option>
-        <option value="DE">Germany DE</option>
-        <option value="BE">Belgium BE</option>
-        <option value="FR">France FR</option>
-        <option value="Global">Global 🌍</option>
-      </select>
-    </div>
+      <v-col cols="12" md="6">
+        <v-select
+          v-model="selectedCountry"
+          :items="['NL', 'DE', 'BE', 'FR', 'Global']"
+          label="Search scope"
+        />
+      </v-col>
 
-    <div>
-      <input
-        v-model="search"
-        @input="onSearchInput"
-        placeholder="Search city"
-      />
-      <ul v-if="suggestions.length">
-        <li
-          v-for="(city, index) in suggestions"
-          :key="index"
-          @click="selectCity(city)"
-          style="cursor: pointer"
-        >
-          {{ city.name }}{{ city.state ? ', ' + city.state : '' }}, {{ city.country }}
-        </li>
-      </ul>
-    </div>
+      <v-col cols="12" md="6">
+        <v-text-field
+          v-model="search"
+          label="Search city"
+          @input="onSearchInput"
+        />
+      </v-col>
 
-    <v-container>
-      <v-btn color="primary">I'm Vuetify!</v-btn>
-    </v-container>
+      <v-col cols="12" v-if="suggestions.length">
+        <v-list>
+          <v-list-item
+            v-for="(city, index) in suggestions"
+            :key="index"
+            @click="selectCity(city)"
+            class="city-suggestion"
+          >
+            {{ city.name }}{{ city.state ? ', ' + city.state : '' }},
+            {{ city.country }}
+          </v-list-item>
+        </v-list>
+      </v-col>
 
-    <button @click="useMyLocation">📍 My Location</button>
-    <button @click="clearWeatherCache">🧹 Clear Weather Cache</button>
+      <v-col cols="12" class="text-center" v-if="loading">
+        <v-progress-circular indeterminate color="primary" />
+      </v-col>
 
-    <div v-if="loading">Loading...</div>
+      <v-col cols="12" v-if="weatherData">
+        <WeatherCard :cityName="selectedCityName" :data="weatherData" />
+      </v-col>
+    </v-row>
 
-    <div v-if="selectedCityName">
-      <p><strong>Selected City:</strong> {{ selectedCityName }}</p>
-    </div>
-
-    <div v-if="weatherData && !loading">
-      <p><strong>Latitude:</strong> {{ weatherData.lat }}</p>
-      <p><strong>Longitude:</strong> {{ weatherData.lon }}</p>
-      <p><strong>Timezone:</strong> {{ weatherData.timezone }}</p>
-      <p><strong>Temperature:</strong> {{ Math.round(weatherData.current?.temp) }} °C</p>
-      <p><strong>Feels Like:</strong> {{  Math.round(weatherData.current?.feels_like) }} °C</p>
-      <p><strong>Condition:</strong> {{ weatherData.current?.weather[0]?.main }} {{ weatherIcon(weatherData.current?.weather[0]?.id) }}</p>
-      <p><strong>Description:</strong> {{ weatherData.current?.weather[0]?.description }}</p>
-      <p>
-        <strong>Wind: </strong>
-        <span
-          class="wind-arrow"
-          :style="{ transform: `rotate(${weatherData.current?.wind_deg ?? 0}deg)` }"
-          aria-label="Wind direction"
-        >↑
-        </span>
-        {{ toKmh(weatherData.current?.wind_speed) }},
-        {{ windDirectionFromDegrees(weatherData.current?.wind_deg) }},
-        {{ beaufortScale(weatherData.current?.wind_speed) }}
-      </p>
-      <p><strong>UV Index:</strong> {{ weatherData.current?.uvi }}</p>
-      <p><strong>Humidity:</strong> {{ weatherData.current?.humidity }}%</p>
-      <p><strong>Sunrise:</strong> {{ formatTime(weatherData.current?.sunrise) }}</p>
-      <p><strong>Sunset:</strong> {{ formatTime(weatherData.current?.sunset) }}</p>
-    </div>
-
-  </div>
+    <LocationConsentDialog
+      v-model="showLocationConsent"
+      @accept="grantConsent"
+      @deny="denyConsent"
+    />
+  </v-container>
 </template>
 
 <script setup lang="ts">
-import './HomeView.scss'
-import { useWeatherData } from './HomeView'
-import {
-  formatTime,
-  weatherIcon
-} from '@/utils/weatherFormat'
-import {
-  windDirectionFromDegrees,
-  toKmh,
-  beaufortScale
-} from '@/utils/weatherFormat'
+import { watch, onMounted } from 'vue'
+import { useWeatherSearch } from '@/composables/useWeatherSearch'
+import { useGeolocationConsent } from '@/composables/useGeolocationConsent'
+import WeatherCard from '@/components/WeatherCard.vue'
+import LocationConsentDialog from '@/components/LocationConsentDialog.vue'
 
+// Weather data + UI state
 const {
-  weatherData,
-  loading,
   search,
   suggestions,
   selectedCountry,
-  onSearchInput,
-  selectCity,
+  weatherData,
+  selectedCityName,
+  loading,
+  fetchWeather,
+  fetchCitySuggestions,
   useMyLocation,
-  clearWeatherCache,
-  selectedCityName
-} = useWeatherData()
+} = useWeatherSearch()
+
+// Consent dialog + flow control
+const {
+  showLocationConsent,
+  initGeolocationFlow,
+  grantConsent,
+  denyConsent,
+} = useGeolocationConsent(fetchWeather, useMyLocation)
+
+onMounted(() => {
+  initGeolocationFlow()
+})
+
+// Clear search if country changes
+watch(selectedCountry, () => {
+  search.value = ''
+  suggestions.value = []
+})
+
+function onSearchInput() {
+  fetchCitySuggestions(search.value)
+}
+
+function selectCity(city: { name: string; lat: number; lon: number }) {
+  fetchWeather(String(city.lat), String(city.lon), city.name)
+}
 </script>
+
+<style scoped src="./HomeView.scss"></style>

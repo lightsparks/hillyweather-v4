@@ -34,17 +34,35 @@ export function beaufortScale(speedMps: number | undefined): string {
   if (speedMps === undefined || speedMps === null) return '-'
   const kmh = speedMps * 3.6
 
-  if (kmh < 1) return 'Calm'
-  if (kmh < 6) return 'Light air'
-  if (kmh < 12) return 'Light breeze'
-  if (kmh < 20) return 'Gentle breeze'
-  if (kmh < 29) return 'Moderate breeze'
-  if (kmh < 39) return 'Fresh breeze'
-  if (kmh < 50) return 'Strong breeze'
-  if (kmh < 62) return 'Near gale'
-  if (kmh < 75) return 'Gale'
-  if (kmh < 89) return 'Severe gale'
-  if (kmh < 103) return 'Storm'
-  if (kmh < 118) return 'Violent storm'
-  return 'Hurricane'
+  if (kmh < 1) return 'calm'
+  if (kmh < 6) return 'light air'
+  if (kmh < 12) return 'light breeze'
+  if (kmh < 20) return 'gentle breeze'
+  if (kmh < 29) return 'moderate breeze'
+  if (kmh < 39) return 'fresh breeze'
+  if (kmh < 50) return 'strong breeze'
+  if (kmh < 62) return 'near gale'
+  if (kmh < 75) return 'gale'
+  if (kmh < 89) return 'severe gale'
+  if (kmh < 103) return 'storm'
+  if (kmh < 118) return 'violent storm'
+  return 'hurricane'
+}
+
+export function formatWind(
+  speedMps: number | undefined,
+  degrees?: number,
+  gustMps?: number
+): string {
+  if (speedMps === undefined || speedMps === null) return '-'
+
+  const kmh = toKmh(speedMps)
+  const direction = windDirectionFromDegrees(degrees)
+
+  let gustPart = ''
+  if (gustMps !== undefined && gustMps !== null && gustMps > speedMps + 2) {
+    gustPart = `, gusts up to ${toKmh(gustMps)}`
+  }
+
+  return `${kmh} ${direction}${gustPart}`.trim()
 }
