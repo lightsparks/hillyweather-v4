@@ -6,14 +6,14 @@
           v-model="selectedCountry"
           rounded="xxl"
           :items="['NL', 'DE', 'BE', 'FR', 'Global']"
-          label="Search scope"
+          label="Zoekgebied"
         />
       </v-col>
 
       <v-col cols="12" md="6">
         <v-text-field
           v-model="search"
-          label="Search city"
+          label="Zoek stad"
           @input="onSearchInput"
         />
       </v-col>
