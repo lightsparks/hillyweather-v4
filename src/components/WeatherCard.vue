@@ -14,11 +14,6 @@
             <strong>Condition:</strong>
             {{ capitalizeFirst(data.current.weather[0].description) }}
           </p>
-        </v-col>
-        <v-col cols="12" sm="6">
-          <p class="text-subtitle-1">
-            <strong>Humidity:</strong> {{ data.current.humidity }}%
-          </p>
           <p class="text-subtitle-1">
             <strong>Wind:</strong>
             {{
@@ -29,6 +24,14 @@
               )
             }}
             ({{ beaufortScale(data.current.wind_speed) }})
+          </p>
+        </v-col>
+        <v-col cols="12" sm="6">
+          <p class="text-subtitle-1">
+            <strong>UV Index:</strong> {{ data.current.uvi }}
+          </p>
+          <p class="text-subtitle-1">
+            <strong>Humidity:</strong> {{ data.current.humidity }}%
           </p>
         </v-col>
       </v-row>
