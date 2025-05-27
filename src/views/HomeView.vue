@@ -91,7 +91,7 @@ const {
   onSearchInput,
   selectCity,
   useMyLocation,
-  clearWeatherCache, // ✅ include this
-  selectedCityName    // ✅ include this
+  clearWeatherCache,
+  selectedCityName
 } = useWeatherData()
 </script>
