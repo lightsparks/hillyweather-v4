@@ -92,7 +92,7 @@ export function useWeatherSearch() {
 
         const lat = position.coords.latitude.toString()
         const lon = position.coords.longitude.toString()
-        fetchWeather(lat, lon, 'Your location')
+        fetchWeather(lat, lon, 'your location')
       },
       (error) => {
         if (resolved) return

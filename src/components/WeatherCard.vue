@@ -1,20 +1,20 @@
 <template>
-  <v-card class="mt-4" color="primary" variant="tonal">
-    <v-card-title>Weather for {{ cityName }}</v-card-title>
+  <v-card class="mt-4 ntr-regular" color="primary" variant="tonal">
+  <v-card-title>Weather for {{ cityName }}</v-card-title>
     <v-card-text>
       <v-row>
         <v-col cols="12" sm="6">
-          <p class="text-subtitle-1">
+          <p>
             <strong>Temperature:</strong>{{ Math.round(data.current.temp) }}°C
             <span v-if="Math.round(data.current.feels_like) !== Math.round(data.current.temp)">
               (feels like {{ Math.round(data.current.feels_like) }}°C)
             </span>
           </p>
-          <p class="text-subtitle-1">
+          <p>
             <strong>Condition:</strong>
             {{ capitalizeFirst(data.current.weather[0].description) }}
           </p>
-          <p class="text-subtitle-1">
+          <p>
             <strong>Wind:</strong>
             {{
               formatWind(
@@ -27,10 +27,10 @@
           </p>
         </v-col>
         <v-col cols="12" sm="6">
-          <p class="text-subtitle-1">
+          <p>
             <strong>UV Index:</strong> {{ data.current.uvi }}
           </p>
-          <p class="text-subtitle-1">
+          <p>
             <strong>Humidity:</strong> {{ data.current.humidity }}%
           </p>
         </v-col>
