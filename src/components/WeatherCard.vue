@@ -5,17 +5,17 @@
       <v-row>
         <v-col cols="12" sm="6">
           <p>
-            <strong>Temperatuur:</strong>{{ Math.round(data.current.temp) }}°C
+            <strong>Temperatuur:  </strong>{{ Math.round(data.current.temp) }}°C
             <span v-if="Math.round(data.current.feels_like) !== Math.round(data.current.temp)">
               (feels like {{ Math.round(data.current.feels_like) }}°C)
             </span>
           </p>
           <p>
-            <strong>Weerconditie:</strong>
+            <strong>Weerconditie:  </strong>
             {{ translateWeatherDescription(data.current.weather[0].description) }}
           </p>
           <p>
-            <strong>Wind:</strong>
+            <strong>Wind:  </strong>
             {{ beaufortScale(data.current.wind_speed) }}, {{
               formatWind(
                 data.current.wind_speed,
@@ -27,10 +27,10 @@
         </v-col>
         <v-col cols="12" sm="6">
           <p>
-            <strong>UV Index:</strong> {{ data.current.uvi }}
+            <strong>UV Index:  </strong> {{ data.current.uvi }}
           </p>
           <p>
-            <strong>Luchtvochtigheid:</strong> {{ data.current.humidity }}%
+            <strong>Luchtvochtigheid:  </strong> {{ data.current.humidity }}%
           </p>
         </v-col>
       </v-row>
@@ -47,8 +47,8 @@ defineProps<{
   data: WeatherResponse
 }>()
 
-function capitalizeFirst(str: string) {
-  return str.charAt(0).toUpperCase() + str.slice(1)
-}
+// function capitalizeFirst(str: string) {
+//   return str.charAt(0).toUpperCase() + str.slice(1)
+// }
 
 </script>
