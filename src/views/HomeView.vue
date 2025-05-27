@@ -31,6 +31,10 @@
       </ul>
     </div>
 
+    <v-container>
+      <v-btn color="primary">I'm Vuetify!</v-btn>
+    </v-container>
+
     <button @click="useMyLocation">📍 My Location</button>
     <button @click="clearWeatherCache">🧹 Clear Weather Cache</button>
 

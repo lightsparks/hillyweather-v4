@@ -2,14 +2,11 @@
   "extends": "@vue/tsconfig/tsconfig.dom.json",
   "compilerOptions": {
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
-
-    /* Module resolution fix */
-    "baseUrl": ".",                      // 👈 Add this
+    "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"]                   // 👈 Add this
+      "@/*": ["src/*"]
     },
-
-    /* Linting */
+    "types": ["vite/client", "vuetify"],
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
