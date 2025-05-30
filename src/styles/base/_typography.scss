@@ -37,6 +37,20 @@ div.resolved-city {
   font-size: 1.5rem;
 }
 
+.weather-description {
+  display: flex;
+  justify-content: center;
+  font-size: 2rem;
+  font-weight: 400;
+  padding-top: 0;
+  padding-bottom: 2rem;
+  font-style: italic;
+}
+
+.weather-data-label {
+  font-weight: 600;
+}
+
 // footer text
 .footer-container {
   padding: vars.$spacing-unit 1rem;
