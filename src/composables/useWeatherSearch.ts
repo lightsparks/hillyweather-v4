@@ -6,6 +6,8 @@ import { debounce } from '@/utils/debounce'
 const apiKey = import.meta.env.VITE_OPENWEATHER_API_KEY
 const exclude = import.meta.env.VITE_OPENWEATHER_EXCLUDE
 const baseUrl = import.meta.env.VITE_OPENWEATHER_BASE
+const CURRENT_LOCATION_LABEL = 'Huidige locatie'
+
 
 const fallbackLat = import.meta.env.VITE_FALLBACK_LAT
 const fallbackLon = import.meta.env.VITE_FALLBACK_LON
@@ -16,6 +18,8 @@ export function useWeatherSearch() {
   const weatherCache = new Map<string, WeatherResponse>()
   const weatherData = ref<WeatherResponse | null>(null)
   const selectedCityName = ref<string | null>(null)
+  const resolvedCityName = ref<string | null>(null)
+
   const loading = ref(false)
 
   const search = ref('')
@@ -76,47 +80,58 @@ export function useWeatherSearch() {
     }
   }, 300)
 
-  function useMyLocation() {
-    if (!navigator.geolocation) {
-      console.warn('Geolocation not supported')
-      fetchWeather(fallbackLat, fallbackLon, `${fallbackCity}, ${fallbackCountry}`)
-      return
+  async function resolveCityName(lat: string, lon: string): Promise<string> {
+    try {
+      const url = `https://api.openweathermap.org/geo/1.0/reverse?lat=${lat}&lon=${lon}&limit=1&appid=${apiKey}`
+      const res = await fetch(url)
+      const json: GeoCityResult[] = await res.json()
+
+      if (json.length) {
+        const city = json[0]
+        return `${city.name}${city.state ? ', ' + city.state : ''}, ${city.country}`
+      }
+    } catch (err) {
+      console.warn('Failed to reverse geocode:', err)
     }
 
-    let resolved = false
+    return `${fallbackCity}, ${fallbackCountry}`
+  }
 
+  function useMyLocation() {
+    // …geolocation supported
     navigator.geolocation.getCurrentPosition(
-      (position) => {
-        if (resolved) return
-        resolved = true
+      async (position) => {
+        const lat = String(position.coords.latitude)
+        const lon = String(position.coords.longitude)
 
-        const lat = position.coords.latitude.toString()
-        const lon = position.coords.longitude.toString()
-        fetchWeather(lat, lon, 'your location')
+        // first set the resolved name
+        const cityName = await resolveCityName(lat, lon)
+        resolvedCityName.value = cityName
+
+        // then fetch with the _plain_ label
+        fetchWeather(lat, lon, CURRENT_LOCATION_LABEL)
       },
-      (error) => {
-        if (resolved) return
-        resolved = true
-
+      async (error) => {
         console.warn('⚠️ Geolocation error:', error)
-        fetchWeather(fallbackLat, fallbackLon, `${fallbackCity}, ${fallbackCountry}`)
+
+        const cityName = await resolveCityName(fallbackLat, fallbackLon)
+        resolvedCityName.value = cityName
+
+        fetchWeather(fallbackLat, fallbackLon, CURRENT_LOCATION_LABEL)
       },
-      {
-        enableHighAccuracy: true,
-        timeout: 10000,         // ⬅️ increase timeout
-        maximumAge: 0
-      }
+      { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
     )
 
-    // Failsafe: fallback after 12 seconds if neither callback runs
-    setTimeout(() => {
-      if (!resolved) {
+    // fallback timeout
+    setTimeout(async () => {
+      if (!resolvedCityName.value) {
         console.warn('🕒 Manual fallback triggered')
-        fetchWeather(fallbackLat, fallbackLon, `${fallbackCity}, ${fallbackCountry}`)
+        const cityName = await resolveCityName(fallbackLat, fallbackLon)
+        resolvedCityName.value = cityName
+        fetchWeather(fallbackLat, fallbackLon, CURRENT_LOCATION_LABEL)
       }
     }, 6000)
   }
-
 
 
   return {
@@ -125,9 +140,11 @@ export function useWeatherSearch() {
     selectedCountry,
     weatherData,
     selectedCityName,
+    resolvedCityName,
     loading,
     fetchWeather,
     fetchCitySuggestions,
     useMyLocation,
   }
+
 }

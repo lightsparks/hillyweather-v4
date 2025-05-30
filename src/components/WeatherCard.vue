@@ -1,6 +1,27 @@
 <template>
   <v-card class="mt-4 ntr-regular" color="primary" variant="tonal">
-  <v-card-title>Het weer voor {{ cityName }}</v-card-title>
+    <v-card-title class="city-title">
+      {{ cityName }}
+      <div
+        v-if="cityName?.includes('Huidige locatie') && resolvedCity"
+        class="resolved-city"
+      >
+        ({{ resolvedCity }})
+      </div>
+
+    </v-card-title>
+
+
+
+    <!-- Weather icon image -->
+    <div class="weather-icon-wrapper">
+      <img
+        :src="`/weather-icons/${data.current.weather[0].icon}.png`"
+        :alt="data.current.weather[0].description"
+        class="weather-icon"
+      />
+    </div>
+
     <v-card-text>
       <v-row>
         <v-col cols="12" sm="6">
@@ -43,8 +64,9 @@ import type { WeatherResponse } from '@/types/WeatherResponse'
 import { formatWind, beaufortScale, translateWeatherDescription } from '@/utils/weatherFormat'
 
 defineProps<{
-  cityName: string
+  cityName: string | null
   data: WeatherResponse
+  resolvedCity?: string
 }>()
 
 // function capitalizeFirst(str: string) {
