@@ -16,39 +16,61 @@ export function weatherIcon(id: number | undefined): string {
   return ''
 }
 
-export function windDirectionFromDegrees(degrees: number | undefined): string {
-  if (degrees === undefined || degrees === null) return '–'
+export function windAbbrevFromDegrees(deg: number | undefined): string {
+  if (deg == null) return '–';
+  const points = [
+    'N','NNO','NO','ONO',
+    'O','OZO','ZO','ZZO',
+    'Z','ZZW','ZW','WZW',
+    'W','WNW','NW','NNW',
+  ];
+  const idx = Math.round(deg / 22.5) % 16;
+  return points[idx];
+}
 
-  // Array of wind directions
-  // if (degrees === undefined || degrees === null) return '-'
-  //
-  // const directions = ['N', 'NNO', 'NO', 'ONO', 'O', 'OZO', 'ZO', 'ZZO',
-  //   'Z', 'ZZW', 'ZW', 'WZW', 'W', 'WNW', 'NW', 'NNW']
-  // const index = Math.round(degrees / 22.5) % 16
-  // return directions[index]
+export function windArrowFromDegrees(degrees: number | undefined): string {
+  if (degrees === undefined || degrees === null) return '–'
 
   // Array of arrows pointing in 16 directions
   const arrows = [
-    '↓',  // N (wind blowing south)
-    '↙',  // NNE
-    '↙',  // NE
-    '↙',  // ENE
-    '←',  // E
-    '↖',  // ESE
-    '↖',  // SE
-    '↖',  // SSE
-    '↑',  // S (wind blowing north)
-    '↗',  // SSW
-    '↗',  // SW
-    '↗',  // WSW
-    '→',  // W
-    '↘',  // WNW
-    '↘',  // NW
-    '↘',  // NNW
+    '⬇️',   // N (wind blowing south)
+    '↙️',   // NNE
+    '↙️',   // NE
+    '↙️',   // ENE
+    '⬅️',   // E
+    '↖️',   // ESE
+    '↖️',   // SE
+    '↖️',   // SSE
+    '⬆️',   // S (wind blowing north)
+    '↗️',   // SSW
+    '↗️',   // SW
+    '↗️',   // WSW
+    '➡️',   // W
+    '↘️',   // WNW
+    '↘️',   // NW
+    '↘️',   // NNW
   ]
 
   const index = Math.round(degrees / 22.5) % 16
   return arrows[index]
+}
+
+export function beaufortNumber(speedMps: number | undefined): number | '-' {
+  if (speedMps == null) return '-';
+  const kmh = speedMps * 3.6;
+  if (kmh < 1)   return 0;
+  if (kmh < 6)   return 1;
+  if (kmh < 12)  return 2;
+  if (kmh < 20)  return 3;
+  if (kmh < 29)  return 4;
+  if (kmh < 39)  return 5;
+  if (kmh < 50)  return 6;
+  if (kmh < 62)  return 7;
+  if (kmh < 75)  return 8;
+  if (kmh < 89)  return 9;
+  if (kmh < 103) return 10;
+  if (kmh < 118) return 11;
+  return 12;
 }
 
 export function toKmh(mps: number | undefined): string {
@@ -60,18 +82,18 @@ export function beaufortScale(speedMps: number | undefined): string {
   if (speedMps === undefined || speedMps === null) return '-'
   const kmh = speedMps * 3.6
 
-  if (kmh < 1) return 'windstil'
-  if (kmh < 6) return 'zeer zwak'
-  if (kmh < 12) return 'zwak'
-  if (kmh < 20) return 'vrij matig'
-  if (kmh < 29) return 'matig'
-  if (kmh < 39) return 'vrij krachtig'
-  if (kmh < 50) return 'krachtig'
-  if (kmh < 62) return 'hard'
-  if (kmh < 75) return 'stormachtig'
-  if (kmh < 89) return 'storm'
-  if (kmh < 103) return 'zware storm'
-  if (kmh < 118) return 'zeer zware storm'
+  if (kmh < 1) return 'windstil, windkracht 1'
+  if (kmh < 6) return 'zeer zwak, windkracht 2'
+  if (kmh < 12) return 'zwak, windkracht 3'
+  if (kmh < 20) return 'vrij matig, windkracht 4'
+  if (kmh < 29) return 'matig, windkracht 5'
+  if (kmh < 39) return 'vrij krachtig, windkracht 6'
+  if (kmh < 50) return 'krachtig, windkracht 7'
+  if (kmh < 62) return 'hard, windkracht 8'
+  if (kmh < 75) return 'stormachtig, windkracht 9'
+  if (kmh < 89) return 'storm, windkracht 10'
+  if (kmh < 103) return 'zware storm, windkracht 11'
+  if (kmh < 118) return 'zeer zware storm, windkracht 12'
   return 'orkaan'
 }
 
@@ -82,15 +104,15 @@ export function formatWind(
 ): string {
   if (speedMps === undefined || speedMps === null) return '-'
 
-  const kmh = toKmh(speedMps)
-  const direction = windDirectionFromDegrees(degrees)
+  // const kmh = toKmh(speedMps)
+  const direction = windArrowFromDegrees(degrees)
 
   let gustPart = ''
   if (gustMps !== undefined && gustMps !== null && gustMps > speedMps + 2) {
     gustPart = `, met windstoten tot ${toKmh(gustMps)}`
   }
 
-  return `${kmh} ${direction}${gustPart}`.trim()
+  return `${direction}${gustPart}`.trim()
 }
 
 export function translateWeatherDescription(description: string | undefined): string {
@@ -149,7 +171,7 @@ export function translateWeatherDescription(description: string | undefined): st
     'mist': 'mist',
     'smoke': 'rook',
     'haze': 'nevel',
-    'sand/dust whirls': 'zand-/stofwervels',
+    'sand/dust whirls': 'opwervelend zand/stof',
     'fog': 'dichte mist',
     'sand': 'zand',
     'dust': 'stof',
@@ -160,13 +182,9 @@ export function translateWeatherDescription(description: string | undefined): st
     // ☀️ Clear & Clouds
     'clear sky': 'heldere lucht',
     'few clouds': 'lichte bewolking',
-    'few clouds: 11-25%': 'lichte bewolking (11-25%)',
     'scattered clouds': 'verspreide bewolking',
-    'scattered clouds: 25-50%': 'verspreide bewolking (25-50%)',
     'broken clouds': 'gebroken bewolking',
-    'broken clouds: 51-84%': 'gebroken bewolking (51-84%)',
     'overcast clouds': 'bewolkt',
-    'overcast clouds: 85-100%': 'bewolkt (85-100%)',
   }
 
   return translations[description.toLowerCase()] ?? description

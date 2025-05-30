@@ -8,10 +8,7 @@
       >
         ({{ resolvedCity }})
       </div>
-
     </v-card-title>
-
-
 
     <!-- Weather icon image -->
     <div class="weather-icon-wrapper">
@@ -22,37 +19,43 @@
       />
     </div>
 
+    <v-card-text class="weather-description">{{ capitalizeFirst(translateWeatherDescription(data.current.weather[0].description)) }}</v-card-text>
+
     <v-card-text>
-      <v-row>
-        <v-col cols="12" sm="6">
-          <p>
-            <strong>Temperatuur:  </strong>{{ Math.round(data.current.temp) }}°C
+      <v-row justify="center" class="text-no-wrap">
+        <v-col cols="12" sm="6" class="d-flex justify-space-between align-center">
+          <span class="weather-data-label">Temperatuur: </span>
+          <v-spacer></v-spacer>
+          <span class="weather-data-value">
+            {{ Math.round(data.current.temp) }}°C
             <span v-if="Math.round(data.current.feels_like) !== Math.round(data.current.temp)">
               (feels like {{ Math.round(data.current.feels_like) }}°C)
             </span>
-          </p>
-          <p>
-            <strong>Weerconditie:  </strong>
-            {{ translateWeatherDescription(data.current.weather[0].description) }}
-          </p>
-          <p>
-            <strong>Wind:  </strong>
-            {{ beaufortScale(data.current.wind_speed) }}, {{
-              formatWind(
-                data.current.wind_speed,
-                data.current.wind_deg,
-                data.current.wind_gust,
-              )
-            }}
-          </p>
+          </span>
         </v-col>
-        <v-col cols="12" sm="6">
-          <p>
-            <strong>UV Index:  </strong> {{ data.current.uvi }}
-          </p>
-          <p>
-            <strong>Luchtvochtigheid:  </strong> {{ data.current.humidity }}%
-          </p>
+      </v-row>
+      <v-row justify="center" class="text-no-wrap">
+        <v-col cols="12" sm="6" class="d-flex justify-space-between align-center">
+          <span class="weather-data-label">Windkracht: </span>
+          <v-spacer></v-spacer>
+          <span class="weather-data-value">
+            {{ windArrowFromDegrees(data.current.wind_deg) }}
+            {{ windAbbrevFromDegrees(data.current.wind_deg) }}
+            {{ beaufortNumber(data.current.wind_speed) }}</span>
+        </v-col>
+      </v-row>
+      <v-row justify="center" class="text-no-wrap">
+        <v-col cols="12" sm="6" class="d-flex justify-space-between align-center">
+          <span class="weather-data-label">UV Index: </span>
+          <v-spacer></v-spacer>
+          <span class="weather-data-value">{{ data.current.uvi }}</span>
+        </v-col>
+      </v-row>
+      <v-row justify="center" class="text-no-wrap">
+        <v-col cols="12" sm="6" class="d-flex justify-space-between align-center">
+          <span class="weather-data-label">Luchtvochtigheid: </span>
+          <v-spacer></v-spacer>
+          <span class="weather-data-value">{{ data.current.humidity }}%</span>
         </v-col>
       </v-row>
     </v-card-text>
@@ -61,7 +64,12 @@
 
 <script setup lang="ts">
 import type { WeatherResponse } from '@/types/WeatherResponse'
-import { formatWind, beaufortScale, translateWeatherDescription } from '@/utils/weatherFormat'
+import {
+  translateWeatherDescription,
+  windArrowFromDegrees,
+  windAbbrevFromDegrees,
+  beaufortNumber
+} from '@/utils/weatherFormat'
 
 defineProps<{
   cityName: string | null
@@ -69,8 +77,8 @@ defineProps<{
   resolvedCity?: string
 }>()
 
-// function capitalizeFirst(str: string) {
-//   return str.charAt(0).toUpperCase() + str.slice(1)
-// }
+function capitalizeFirst(str: string) {
+  return str.charAt(0).toUpperCase() + str.slice(1)
+}
 
 </script>
