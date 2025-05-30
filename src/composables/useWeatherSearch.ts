@@ -16,6 +16,8 @@ export function useWeatherSearch() {
   const weatherCache = new Map<string, WeatherResponse>()
   const weatherData = ref<WeatherResponse | null>(null)
   const selectedCityName = ref<string | null>(null)
+  const resolvedCityName = ref<string | null>(null)
+
   const loading = ref(false)
 
   const search = ref('')
@@ -113,8 +115,10 @@ export function useWeatherSearch() {
         const lon = position.coords.longitude.toString()
 
         resolveCityName(lat, lon).then((cityName) => {
-          fetchWeather(lat, lon, `Huidige locatie (${cityName})`)
+          resolvedCityName.value = cityName
+          fetchWeather(lat, lon, 'Huidige locatie')
         })
+
       },
       (error) => {
         if (resolved) return
@@ -122,8 +126,10 @@ export function useWeatherSearch() {
 
         console.warn('⚠️ Geolocation error:', error)
         resolveCityName(fallbackLat, fallbackLon).then((cityName) => {
-          fetchWeather(fallbackLat, fallbackLon, `Huidige locatie (${cityName})`)
+          resolvedCityName.value = cityName
+          fetchWeather(fallbackLat, fallbackLon, 'Huidige locatie')
         })
+
       },
       {
         enableHighAccuracy: true,
@@ -148,9 +154,11 @@ export function useWeatherSearch() {
     selectedCountry,
     weatherData,
     selectedCityName,
+    resolvedCityName,
     loading,
     fetchWeather,
     fetchCitySuggestions,
     useMyLocation,
   }
+
 }

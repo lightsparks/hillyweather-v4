@@ -1,6 +1,13 @@
 <template>
   <v-card class="mt-4 ntr-regular" color="primary" variant="tonal">
-  <v-card-title>{{ cityName }}</v-card-title>
+    <v-card-title class="city-title">
+      {{ cityName }}
+      <div v-if="cityName === 'Huidige locatie' && resolvedCity" class="resolved-city">
+        ({{ resolvedCity }})
+      </div>
+    </v-card-title>
+
+
 
     <!-- Weather icon image -->
     <div class="weather-icon-wrapper">
@@ -55,6 +62,7 @@ import { formatWind, beaufortScale, translateWeatherDescription } from '@/utils/
 defineProps<{
   cityName: string
   data: WeatherResponse
+  resolvedCity?: string
 }>()
 
 // function capitalizeFirst(str: string) {
