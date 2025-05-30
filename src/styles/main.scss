@@ -31,3 +31,21 @@ body {
     max-width: 640px; // Optional: fixed max width for large desktops
   }
 }
+
+.weather-icon-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem 0;
+}
+
+.weather-icon {
+  height: 80px; // 👈 Change this value as needed
+  width: auto;
+}
+
+@media (max-width: 600px) {
+  .weather-icon {
+    height: 64px;
+  }
+}

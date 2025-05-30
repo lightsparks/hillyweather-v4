@@ -1,6 +1,16 @@
 <template>
   <v-card class="mt-4 ntr-regular" color="primary" variant="tonal">
   <v-card-title>Het weer voor {{ cityName }}</v-card-title>
+
+    <!-- Weather icon image -->
+    <div class="weather-icon-wrapper">
+      <img
+        :src="getWeatherIconUrl(data.current.weather[0].icon)"
+        :alt="data.current.weather[0].description"
+        class="weather-icon"
+      />
+    </div>
+
     <v-card-text>
       <v-row>
         <v-col cols="12" sm="6">
@@ -46,6 +56,10 @@ defineProps<{
   cityName: string
   data: WeatherResponse
 }>()
+
+const getWeatherIconUrl = (iconCode: string) =>
+  new URL(`@/assets/${iconCode}.png`, import.meta.url).href
+
 
 // function capitalizeFirst(str: string) {
 //   return str.charAt(0).toUpperCase() + str.slice(1)
