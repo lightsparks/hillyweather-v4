@@ -1,55 +1,52 @@
+<!-- HomeView.vue -->
 <template>
   <v-container class="home-view" fluid>
-    <v-row>
-      <v-col cols="12" md="6">
-        <div class="search-field-wrapper">
-          <v-select
-            v-model="selectedCountry"
-            rounded="xxl"
-            :items="['NL', 'DE', 'BE', 'FR', 'Global']"
-            label="Zoekgebied"
-            @focus="showCountryDropdown = true"
-            @blur="showCountryDropdown = false"
-          />
-        </div>
-      </v-col>
+    <!-- Search Area -->
+    <div class="search-area">
+      <v-row>
+        <v-col cols="12">
+          <div class="search-field-wrapper">
+            <v-text-field
+              v-model="search"
+              label="Zoek locatie"
+              @input="onSearchInput"
+              @focus="showSuggestions = true"
+            />
 
-      <v-col cols="12" md="6">
-        <div class="search-field-wrapper">
-          <v-text-field
-            v-model="search"
-            label="Zoek stad"
-            @input="onSearchInput"
-            @focus="showSuggestions = true"
-          />
-
-          <v-list
-            v-if="showSuggestions && suggestions.length"
-            class="suggestions-overlay"
-          >
-            <v-list-item
-              v-for="(city, index) in suggestions"
-              :key="index"
-              @click="selectCity(city)"
-              @mouseover="highlightedIndex = index"
-              :class="{ highlighted: index === highlightedIndex }"
+            <v-list
+              v-if="showSuggestions && suggestions.length"
+              class="suggestions-overlay"
             >
-              {{ city.name }}{{ city.state ? ', ' + city.state : '' }},
-              {{ city.country }}
-            </v-list-item>
-          </v-list>
-        </div>
-      </v-col>
+              <v-list-item
+                v-for="(city, index) in suggestions"
+                :key="index"
+                @click="selectCity(city)"
+                @mouseover="highlightedIndex = index"
+                :class="{ highlighted: index === highlightedIndex }"
+              >
+                {{ city.name }}{{ city.state ? ', ' + city.state : '' }},
+                {{ city.country }}
+              </v-list-item>
+            </v-list>
+          </div>
+        </v-col>
 
-      <v-col cols="12" class="text-center" v-if="loading">
-        <v-progress-circular indeterminate color="primary" />
-      </v-col>
+        <v-col cols="12" class="text-center" v-if="loading">
+          <v-progress-circular indeterminate color="primary" />
+        </v-col>
+      </v-row>
+    </div>
 
-      <v-col cols="12" v-if="weatherData">
-        <WeatherCard :cityName="selectedCityName" :data="weatherData" />
-      </v-col>
-    </v-row>
+    <!-- WeatherCard fills remaining space -->
+    <div class="weather-area" v-if="weatherData">
+      <WeatherCard
+        :cityName="selectedCityName"
+        :resolvedCity="resolvedCityName"
+        :data="weatherData"
+      />
+    </div>
 
+    <!-- Location consent popup -->
     <LocationConsentDialog
       v-model="showLocationConsent"
       @accept="grantConsent"
@@ -59,38 +56,34 @@
 </template>
 
 <script setup lang="ts">
-import { watch, onMounted } from 'vue'
+import { watch, onMounted, ref, inject } from 'vue'
 import { useWeatherSearch } from '@/composables/useWeatherSearch'
 import { useGeolocationConsent } from '@/composables/useGeolocationConsent'
 import WeatherCard from '@/components/WeatherCard.vue'
 import LocationConsentDialog from '@/components/LocationConsentDialog.vue'
-import { ref } from 'vue'
 
 const highlightedIndex = ref(-1)
 const showSuggestions = ref(false)
+const searchScope = inject<'nl' | 'global'>('searchScope', 'nl')
 
-// Weather data + UI state
 const {
   search,
   suggestions,
   selectedCountry,
   weatherData,
   selectedCityName,
+  resolvedCityName,
   loading,
   fetchWeather,
   fetchCitySuggestions,
   useMyLocation,
 } = useWeatherSearch()
 
-// Consent dialog + flow control
 const { showLocationConsent, initGeolocationFlow, grantConsent, denyConsent } =
   useGeolocationConsent(fetchWeather, useMyLocation)
 
-onMounted(() => {
-  initGeolocationFlow()
-})
+onMounted(initGeolocationFlow)
 
-// Clear search if country changes
 watch(selectedCountry, () => {
   search.value = ''
   suggestions.value = []
@@ -106,7 +99,6 @@ function onSearchInput() {
   fetchCitySuggestions(search.value)
   showSuggestions.value = true
 }
-
 </script>
 
 <style scoped src="./HomeView.scss"></style>

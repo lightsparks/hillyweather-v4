@@ -1,6 +1,6 @@
 <template>
   <v-card class="mt-4 ntr-regular" color="primary" variant="tonal">
-  <v-card-title>Het weer voor {{ cityName }}</v-card-title>
+  <v-card-title>{{ cityName }}</v-card-title>
 
     <!-- Weather icon image -->
     <div class="weather-icon-wrapper">

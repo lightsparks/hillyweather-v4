@@ -76,10 +76,29 @@ export function useWeatherSearch() {
     }
   }, 300)
 
+  async function resolveCityName(lat: string, lon: string): Promise<string> {
+    try {
+      const url = `https://api.openweathermap.org/geo/1.0/reverse?lat=${lat}&lon=${lon}&limit=1&appid=${apiKey}`
+      const res = await fetch(url)
+      const json: GeoCityResult[] = await res.json()
+
+      if (json.length) {
+        const city = json[0]
+        return `${city.name}${city.state ? ', ' + city.state : ''}, ${city.country}`
+      }
+    } catch (err) {
+      console.warn('Failed to reverse geocode:', err)
+    }
+
+    return `${fallbackCity}, ${fallbackCountry}`
+  }
+
   function useMyLocation() {
     if (!navigator.geolocation) {
       console.warn('Geolocation not supported')
-      fetchWeather(fallbackLat, fallbackLon, `${fallbackCity}, ${fallbackCountry}`)
+      resolveCityName(fallbackLat, fallbackLon).then((cityName) => {
+        fetchWeather(fallbackLat, fallbackLon, `Huidige locatie (${cityName})`)
+      })
       return
     }
 
@@ -92,32 +111,36 @@ export function useWeatherSearch() {
 
         const lat = position.coords.latitude.toString()
         const lon = position.coords.longitude.toString()
-        fetchWeather(lat, lon, 'jouw locatie')
+
+        resolveCityName(lat, lon).then((cityName) => {
+          fetchWeather(lat, lon, `Huidige locatie (${cityName})`)
+        })
       },
       (error) => {
         if (resolved) return
         resolved = true
 
         console.warn('⚠️ Geolocation error:', error)
-        fetchWeather(fallbackLat, fallbackLon, `${fallbackCity}, ${fallbackCountry}`)
+        resolveCityName(fallbackLat, fallbackLon).then((cityName) => {
+          fetchWeather(fallbackLat, fallbackLon, `Huidige locatie (${cityName})`)
+        })
       },
       {
         enableHighAccuracy: true,
-        timeout: 10000,         // ⬅️ increase timeout
-        maximumAge: 0
+        timeout: 10000,
+        maximumAge: 0,
       }
     )
 
-    // Failsafe: fallback after 12 seconds if neither callback runs
     setTimeout(() => {
       if (!resolved) {
         console.warn('🕒 Manual fallback triggered')
-        fetchWeather(fallbackLat, fallbackLon, `${fallbackCity}, ${fallbackCountry}`)
+        resolveCityName(fallbackLat, fallbackLon).then((cityName) => {
+          fetchWeather(fallbackLat, fallbackLon, `Huidige locatie (${cityName})`)
+        })
       }
     }, 6000)
   }
-
-
 
   return {
     search,

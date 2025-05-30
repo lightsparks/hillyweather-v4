@@ -1,3 +1,4 @@
+/* main.scss */
 // Import modular styles first
 @use './app-bar';
 @use './typography';
@@ -12,7 +13,6 @@ body {
   margin: 0;
   font-family: 'NTR', sans-serif;
   font-weight: 400;
-  font-style: normal;
   color: #000;
   background-color: #fff;
 }
@@ -22,13 +22,11 @@ body {
   padding: 1rem;
   margin: 0 auto;
 
-  // Vuetify breakpoints
   @media (min-width: 960px) {
     max-width: 50%;
   }
-
   @media (min-width: 1280px) {
-    max-width: 640px; // Optional: fixed max width for large desktops
+    max-width: 640px;
   }
 }
 
@@ -39,26 +37,32 @@ body {
 
 .v-card-title {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
+  text-align: center;
+  white-space: normal;
+  word-break: break-word;
 }
 
 .v-card {
-  margin-top: 2rem;
   border-radius: 2em;
   padding: 1rem;
   height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .weather-icon-wrapper {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 1rem 0;
+  padding: 2rem 0;
 }
 
 .weather-icon {
-  height: 128px; // 👈 Change this value as needed
+  height: 128px;
   width: auto;
   filter: drop-shadow(-4px 8px 8px gray);
 }
@@ -67,4 +71,43 @@ body {
   .weather-icon {
     height: 128px;
   }
+}
+
+.city-title {
+  text-align: center;
+  white-space: normal;
+  word-break: break-word;
+}
+
+.resolved-city {
+  font-size: 1rem;
+  opacity: 0.7;
+  margin-top: 4px;
+}
+
+/* Layout for HomeView */
+.home-view {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 64px); /* subtract app-bar height */
+  padding: 1rem 0;
+  height: calc(100vh - 64px - 2rem - 2rem);
+}
+
+.search-area {
+  flex-shrink: 0;
+  margin-bottom: 1rem;
+}
+
+.weather-area {
+  flex-grow: 1;
+  min-height: 0;
+  display: flex;
+  padding: 0 1rem;
+  margin-bottom: 2rem;
+}
+
+.weather-area .v-card {
+  flex-grow: 1;
+  height: 100%;
 }

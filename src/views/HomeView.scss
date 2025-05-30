@@ -1,6 +1,6 @@
+/* HomeView.scss */
 .search-field-wrapper {
   position: relative;
-  margin-bottom: 1.5rem;
 }
 
 .suggestions-overlay {
@@ -15,24 +15,18 @@
   max-height: 200px;
   overflow-y: auto;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  max-width: 100%;
 }
 
 .suggestions-overlay .v-list-item {
   transition: background-color 0.2s;
   cursor: pointer;
+  white-space: normal;
+  word-break: break-word;
+  line-height: 1.4;
 }
 
 .suggestions-overlay .v-list-item.highlighted,
 .suggestions-overlay .v-list-item:hover {
   background-color: #f0f0f0;
 }
-
-.v-select {
-  background-color: white;
-  border-radius: 12px;
-}
-
-.v-select .v-input__control {
-  min-height: 56px;
-}
-
