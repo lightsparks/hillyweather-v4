@@ -17,17 +17,43 @@ export function weatherIcon(id: number | undefined): string {
 }
 
 export function windDirectionFromDegrees(degrees: number | undefined): string {
-  if (degrees === undefined || degrees === null) return '-'
+  if (degrees === undefined || degrees === null) return '–'
 
-  const directions = ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE',
-    'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW']
+  // Array of wind directions
+  // if (degrees === undefined || degrees === null) return '-'
+  //
+  // const directions = ['N', 'NNO', 'NO', 'ONO', 'O', 'OZO', 'ZO', 'ZZO',
+  //   'Z', 'ZZW', 'ZW', 'WZW', 'W', 'WNW', 'NW', 'NNW']
+  // const index = Math.round(degrees / 22.5) % 16
+  // return directions[index]
+
+  // Array of arrows pointing in 16 directions
+  const arrows = [
+    '↓',  // N (wind blowing south)
+    '↙',  // NNE
+    '↙',  // NE
+    '↙',  // ENE
+    '←',  // E
+    '↖',  // ESE
+    '↖',  // SE
+    '↖',  // SSE
+    '↑',  // S (wind blowing north)
+    '↗',  // SSW
+    '↗',  // SW
+    '↗',  // WSW
+    '→',  // W
+    '↘',  // WNW
+    '↘',  // NW
+    '↘',  // NNW
+  ]
+
   const index = Math.round(degrees / 22.5) % 16
-  return directions[index]
+  return arrows[index]
 }
 
 export function toKmh(mps: number | undefined): string {
   if (mps === undefined || mps === null) return '-'
-  return `${Math.round(mps * 3.6)} km/h`
+  return `${Math.round(mps * 3.6)} km/h`;
 }
 
 export function beaufortScale(speedMps: number | undefined): string {

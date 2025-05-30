@@ -1,0 +1,44 @@
+@use 'variables' as vars;
+
+// body/reset + font
+body {
+  margin: 0;
+  font-family: 'NTR', sans-serif;
+  font-weight: 400;
+  color: #000;
+  background-color: #fff;
+}
+
+:root {
+  --v-font-family: 'NTR, sans-serif';
+}
+
+.v-toolbar-title {
+  padding-top: 0.25rem;
+}
+
+.v-app-bar-title {
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+.v-card-title {
+  margin-top: 2rem;
+  font-size: 2.25rem;
+  font-weight: 600;
+}
+
+div.resolved-city {
+  font-size: 1.5rem;
+}
+
+.v-card-text {
+  font-size: 1.5rem;
+}
+
+// footer text
+.footer-container {
+  padding: vars.$spacing-unit 1rem;
+  font-size: 0.875rem;
+  color: rgba(0, 0, 0, 0.6);
+}

@@ -11,6 +11,8 @@
               label="Zoek locatie"
               @input="onSearchInput"
               @focus="showSuggestions = true"
+              variant="solo-filled"
+              rounded
             />
 
             <v-list
@@ -100,5 +102,3 @@ function onSearchInput() {
   showSuggestions.value = true
 }
 </script>
-
-<style scoped src="./HomeView.scss"></style>
