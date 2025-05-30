@@ -32,6 +32,24 @@ body {
   }
 }
 
+.v-col-12 {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.v-card-title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.v-card {
+  margin-top: 2rem;
+  border-radius: 2em;
+  padding: 1rem;
+  height: 100%;
+}
+
 .weather-icon-wrapper {
   display: flex;
   justify-content: center;
@@ -40,12 +58,13 @@ body {
 }
 
 .weather-icon {
-  height: 80px; // 👈 Change this value as needed
+  height: 128px; // 👈 Change this value as needed
   width: auto;
+  filter: drop-shadow(-4px 8px 8px gray);
 }
 
 @media (max-width: 600px) {
   .weather-icon {
-    height: 64px;
+    height: 128px;
   }
 }

@@ -5,7 +5,7 @@
     <!-- Weather icon image -->
     <div class="weather-icon-wrapper">
       <img
-        :src="getWeatherIconUrl(data.current.weather[0].icon)"
+        :src="`/weather-icons/${data.current.weather[0].icon}.png`"
         :alt="data.current.weather[0].description"
         class="weather-icon"
       />
@@ -56,10 +56,6 @@ defineProps<{
   cityName: string
   data: WeatherResponse
 }>()
-
-const getWeatherIconUrl = (iconCode: string) =>
-  new URL(`@/assets/${iconCode}.png`, import.meta.url).href
-
 
 // function capitalizeFirst(str: string) {
 //   return str.charAt(0).toUpperCase() + str.slice(1)

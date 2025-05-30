@@ -1,0 +1,38 @@
+.search-field-wrapper {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+.suggestions-overlay {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  max-height: 200px;
+  overflow-y: auto;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.suggestions-overlay .v-list-item {
+  transition: background-color 0.2s;
+  cursor: pointer;
+}
+
+.suggestions-overlay .v-list-item.highlighted,
+.suggestions-overlay .v-list-item:hover {
+  background-color: #f0f0f0;
+}
+
+.v-select {
+  background-color: white;
+  border-radius: 12px;
+}
+
+.v-select .v-input__control {
+  min-height: 56px;
+}
+
