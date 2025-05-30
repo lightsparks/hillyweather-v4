@@ -60,7 +60,7 @@ import type { WeatherResponse } from '@/types/WeatherResponse'
 import { formatWind, beaufortScale, translateWeatherDescription } from '@/utils/weatherFormat'
 
 defineProps<{
-  cityName: string
+  cityName: string | null
   data: WeatherResponse
   resolvedCity?: string
 }>()

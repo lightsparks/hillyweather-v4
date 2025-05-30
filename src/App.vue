@@ -1,9 +1,16 @@
 <template>
   <v-app>
     <v-app-bar app color="primary" dark>
-      <v-toolbar-title>HillyWeather</v-toolbar-title>
+      <div class="app-bar-icon-wrapper">
+        <v-img
+          src="/favicon-512x512.png"
+          alt="App Icon"
+          class="app-bar-icon"
+          cover
+        />
+      </div>
+      <v-app-bar-title>HillyWeather</v-app-bar-title>
 
-      <!-- Settings Gear Icon -->
       <v-menu offset-y>
         <template #activator="{ props }">
           <v-btn icon v-bind="props">

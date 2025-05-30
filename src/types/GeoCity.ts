@@ -1,7 +1,7 @@
 export interface GeoCityResult {
-  name: string
-  lat: number
-  lon: number
+  name: string | null
+  lat: number | null
+  lon: number | null
   country: string
   state?: string
 }

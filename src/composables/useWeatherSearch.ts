@@ -116,7 +116,7 @@ export function useWeatherSearch() {
 
         resolveCityName(lat, lon).then((cityName) => {
           resolvedCityName.value = cityName
-          fetchWeather(lat, lon, 'Huidige locatie')
+          fetchWeather(lat, lon, '🧭 Huidige locatie')
         })
 
       },
