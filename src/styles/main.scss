@@ -1,116 +1,16 @@
-/* main.scss */
-// Import modular styles first
-@use './app-bar';
-@use './typography';
+// src/styles/main.scss
 
-// Set Vuetify's default font
 @use 'vuetify/settings' with (
   $body-font-family: 'NTR, sans-serif'
 );
 
-// Global app styles
-body {
-  margin: 0;
-  font-family: 'NTR', sans-serif;
-  font-weight: 400;
-  color: #000;
-  background-color: #fff;
-}
+@use 'vuetify/styles';
 
-.app-wrapper {
-  width: 100%;
-  padding: 1rem;
-  margin: 0 auto;
+@use './base/variables';
+@use './base/typography';
+@use './layout/grid';
+@use './components/app-bar';
+@use './components/weather-card';
+@use './pages/home';
 
-  @media (min-width: 960px) {
-    max-width: 50%;
-  }
-  @media (min-width: 1280px) {
-    max-width: 640px;
-  }
-}
-
-.v-col-12 {
-  padding-top: 0;
-  padding-bottom: 0;
-}
-
-.v-card-title {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  white-space: normal;
-  word-break: break-word;
-}
-
-
-.v-card {
-  border-radius: 2em;
-  padding: 1rem;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.weather-icon-wrapper {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 2rem 0;
-}
-
-.weather-icon {
-  height: 128px;
-  width: auto;
-  filter: drop-shadow(-4px 8px 8px gray);
-}
-
-@media (max-width: 600px) {
-  .weather-icon {
-    height: 128px;
-  }
-}
-
-.city-title {
-  text-align: center;
-  white-space: normal;
-  word-break: break-word;
-}
-
-.resolved-city {
-  font-size: 1rem;
-  opacity: 0.7;
-  margin-top: 4px;
-}
-
-/* Layout for HomeView */
-.home-view {
-  display: flex;
-  flex-direction: column;
-  height: calc(100vh - 64px); /* subtract app-bar height */
-  padding: 1rem 0;
-  height: calc(100vh - 64px - 2rem - 2rem);
-}
-
-.search-area {
-  flex-shrink: 0;
-  margin-bottom: 1rem;
-}
-
-.weather-area {
-  flex-grow: 1;
-  min-height: 0;
-  display: flex;
-  padding: 0 1rem;
-  margin-bottom: 2rem;
-}
-
-.weather-area .v-card {
-  flex-grow: 1;
-  height: 100%;
-}
-
-
+@import url('https://fonts.googleapis.com/css2?family=NTR&display=swap');

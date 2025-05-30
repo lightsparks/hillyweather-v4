@@ -1,0 +1,22 @@
+// wrapper and any grid overrides
+@use '../base/variables' as vars;
+
+.app-wrapper {
+  width: calc(100% - 2rem);
+  padding: vars.$spacing-unit;
+  margin: 0 auto;
+
+  @media (min-width: vars.$breakpoint-md) {
+    width: 50%;
+
+    .v-col-sm-6 {
+      padding: 0 3rem;
+    }
+  }
+}
+
+// zero-out vertical padding on full-width cols
+.v-col-12 {
+  padding-top: 0;
+  padding-bottom: 0;
+}
