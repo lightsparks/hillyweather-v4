@@ -19,4 +19,6 @@ Clean and maintainable file structure
 This project is under active development as a personal learning exercise to improve frontend architecture, API integration, and coding best practices.
 
 ## 🔐 Environment Setup
-Create a .env file in the root and add your API key:
+1. Copy `.env.example` to `.env.local`
+2. Fill in your `VITE_OPENWEATHER_API_KEY` and other vars
+3. `npm install && npm run dev`

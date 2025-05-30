@@ -8,6 +8,10 @@
 
   @media (min-width: vars.$breakpoint-md) {
     width: 50%;
+
+    .v-col-sm-6 {
+      padding: 0 3rem;
+    }
   }
 }
 
