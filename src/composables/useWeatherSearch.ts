@@ -6,6 +6,8 @@ import { debounce } from '@/utils/debounce'
 const apiKey = import.meta.env.VITE_OPENWEATHER_API_KEY
 const exclude = import.meta.env.VITE_OPENWEATHER_EXCLUDE
 const baseUrl = import.meta.env.VITE_OPENWEATHER_BASE
+const CURRENT_LOCATION_LABEL = 'Huidige locatie'
+
 
 const fallbackLat = import.meta.env.VITE_FALLBACK_LAT
 const fallbackLon = import.meta.env.VITE_FALLBACK_LON
@@ -96,57 +98,41 @@ export function useWeatherSearch() {
   }
 
   function useMyLocation() {
-    if (!navigator.geolocation) {
-      console.warn('Geolocation not supported')
-      resolveCityName(fallbackLat, fallbackLon).then((cityName) => {
-        fetchWeather(fallbackLat, fallbackLon, `Huidige locatie (${cityName})`)
-      })
-      return
-    }
-
-    let resolved = false
-
+    // …geolocation supported
     navigator.geolocation.getCurrentPosition(
-      (position) => {
-        if (resolved) return
-        resolved = true
+      async (position) => {
+        const lat = String(position.coords.latitude)
+        const lon = String(position.coords.longitude)
 
-        const lat = position.coords.latitude.toString()
-        const lon = position.coords.longitude.toString()
+        // first set the resolved name
+        const cityName = await resolveCityName(lat, lon)
+        resolvedCityName.value = cityName
 
-        resolveCityName(lat, lon).then((cityName) => {
-          resolvedCityName.value = cityName
-          fetchWeather(lat, lon, '🧭 Huidige locatie')
-        })
-
+        // then fetch with the _plain_ label
+        fetchWeather(lat, lon, CURRENT_LOCATION_LABEL)
       },
-      (error) => {
-        if (resolved) return
-        resolved = true
-
+      async (error) => {
         console.warn('⚠️ Geolocation error:', error)
-        resolveCityName(fallbackLat, fallbackLon).then((cityName) => {
-          resolvedCityName.value = cityName
-          fetchWeather(fallbackLat, fallbackLon, 'Huidige locatie')
-        })
 
+        const cityName = await resolveCityName(fallbackLat, fallbackLon)
+        resolvedCityName.value = cityName
+
+        fetchWeather(fallbackLat, fallbackLon, CURRENT_LOCATION_LABEL)
       },
-      {
-        enableHighAccuracy: true,
-        timeout: 10000,
-        maximumAge: 0,
-      }
+      { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
     )
 
-    setTimeout(() => {
-      if (!resolved) {
+    // fallback timeout
+    setTimeout(async () => {
+      if (!resolvedCityName.value) {
         console.warn('🕒 Manual fallback triggered')
-        resolveCityName(fallbackLat, fallbackLon).then((cityName) => {
-          fetchWeather(fallbackLat, fallbackLon, `Huidige locatie (${cityName})`)
-        })
+        const cityName = await resolveCityName(fallbackLat, fallbackLon)
+        resolvedCityName.value = cityName
+        fetchWeather(fallbackLat, fallbackLon, CURRENT_LOCATION_LABEL)
       }
     }, 6000)
   }
+
 
   return {
     search,

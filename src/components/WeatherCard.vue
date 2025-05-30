@@ -2,9 +2,13 @@
   <v-card class="mt-4 ntr-regular" color="primary" variant="tonal">
     <v-card-title class="city-title">
       {{ cityName }}
-      <div v-if="cityName === 'Huidige locatie' && resolvedCity" class="resolved-city">
+      <div
+        v-if="cityName?.includes('Huidige locatie') && resolvedCity"
+        class="resolved-city"
+      >
         ({{ resolvedCity }})
       </div>
+
     </v-card-title>
 
 
