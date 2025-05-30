@@ -1,4 +1,4 @@
-<template xmlns="http://www.w3.org/1999/html">
+<template>
   <v-card class="mt-4 ntr-regular" color="primary" variant="tonal">
     <v-card-title class="city-title">
       {{ cityName }}

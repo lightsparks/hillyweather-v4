@@ -104,7 +104,7 @@ export function formatWind(
 ): string {
   if (speedMps === undefined || speedMps === null) return '-'
 
-  const kmh = toKmh(speedMps)
+  // const kmh = toKmh(speedMps)
   const direction = windArrowFromDegrees(degrees)
 
   let gustPart = ''
