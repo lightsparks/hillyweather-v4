@@ -1,0 +1,50 @@
+# .github/workflows/deploy.yml
+name: Deploy to GitHub Pages
+
+# Trigger on pushes to main (you can adjust if your default branch is named differently)
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write   # required so the Action can push to gh-pages
+  pages: write      # required for GitHub Pages
+  id-token: write   # required if you use the new GH Pages token permissions (optional)
+
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. checkout the repository
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # 2. set up Node (you can pin to a specific major version)
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'     # or whichever LTS you prefer
+          cache: 'npm'
+
+      # 3. Install dependencies
+      - name: Install dependencies
+        run: npm ci
+
+      # 4. Build the production bundle
+      - name: Build
+        # Bring in the VITE_OPENWEATHER_API_KEY from the repository secrets
+        env:
+          VITE_OPENWEATHER_API_KEY: ${{ secrets.VITE_OPENWEATHER_API_KEY }}
+        run: npm run build
+
+      # 5. Deploy to GitHub Pages via gh-pages branch
+      - name: Deploy to gh-pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          # Publish the `dist/` directory (default Vite build output)
+          publish_dir: ./dist
+          # You can also set 'publish_branch' if you want a custom branch name, but
+          # by default this action will push to gh-pages.
+          github_token: ${{ secrets.GITHUB_TOKEN }}
