@@ -21,8 +21,8 @@
         <v-list>
           <v-list-item>
             <v-radio-group v-model="searchScope" column>
-              <v-radio label="Nederland" value="nl" />
-              <v-radio label="Wereldwijd" value="global" />
+              <v-radio label="Nederland" value="NL" />
+              <v-radio label="Wereldwijd" value="Global" />
             </v-radio-group>
           </v-list-item>
         </v-list>

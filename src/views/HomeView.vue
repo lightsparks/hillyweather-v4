@@ -58,7 +58,7 @@
 </template>
 
 <script setup lang="ts">
-import { watch, onMounted, ref, inject } from 'vue'
+import { watch, onMounted, ref } from 'vue'
 import { useWeatherSearch } from '@/composables/useWeatherSearch'
 import { useGeolocationConsent } from '@/composables/useGeolocationConsent'
 import WeatherCard from '@/components/WeatherCard.vue'
