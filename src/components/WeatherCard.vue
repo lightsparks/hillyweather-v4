@@ -74,7 +74,7 @@ import {
 defineProps<{
   cityName: string | null
   data: WeatherResponse
-  resolvedCity?: string
+  resolvedCity?: string | null
 }>()
 
 function capitalizeFirst(str: string) {

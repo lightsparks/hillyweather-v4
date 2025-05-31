@@ -1,4 +1,4 @@
-import { ref } from 'vue'
+import { ref, Ref } from 'vue'
 import type { WeatherResponse } from '@/types/WeatherResponse'
 import type { GeoCityResult } from '@/types/GeoCity'
 import { debounce } from '@/utils/debounce'
@@ -22,7 +22,7 @@ export function useWeatherSearch() {
 
   const loading = ref(false)
 
-  const search = ref('')
+  const search: Ref<string> = ref('')
   const suggestions = ref<GeoCityResult[]>([])
   const selectedCountry = ref<'NL' | 'Global' | string>('NL')
   const lastFetchedAt = ref<Record<string, number>>({})

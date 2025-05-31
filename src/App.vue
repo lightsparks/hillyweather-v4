@@ -45,7 +45,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, provide } from 'vue'
+import { provide } from 'vue'
 import { inject } from 'vue'
 
 const searchScope = inject<'nl' | 'global'>('searchScope', 'nl')

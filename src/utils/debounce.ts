@@ -1,12 +1,16 @@
-export function debounce<T extends (...args: unknown[]) => unknown>(
-  func: T,
+export function debounce<
+  Args extends unknown[],
+  R
+>(
+  func: (...args: Args) => R,
   wait: number
-): (...args: Parameters<T>) => void {
+): (...args: Args) => void {
   let timeout: ReturnType<typeof setTimeout>
 
-  return function (...args: Parameters<T>) {
+  return (...args: Args) => {
     clearTimeout(timeout)
     timeout = setTimeout(() => {
+      // We use `void` to ignore the return value of `func`, if any
       void func(...args)
     }, wait)
   }
