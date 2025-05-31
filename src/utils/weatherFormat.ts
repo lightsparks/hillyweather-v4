@@ -136,7 +136,7 @@ export function formatWind(
     gustMps !== null &&
     gustMps > speedMps + 2
   ) {
-    gustPart = `, met windstoten tot ${toKmh(gustMps)}`
+    gustPart = `, windstoten tot ${toKmh(gustMps)}`
   }
 
   return `${direction}${gustPart}`.trim()
