@@ -58,7 +58,7 @@
 </template>
 
 <script setup lang="ts">
-import { watch, onMounted, ref, inject } from 'vue'
+import { watch, onMounted, ref } from 'vue'
 import { useWeatherSearch } from '@/composables/useWeatherSearch'
 import { useGeolocationConsent } from '@/composables/useGeolocationConsent'
 import WeatherCard from '@/components/WeatherCard.vue'
@@ -66,7 +66,6 @@ import LocationConsentDialog from '@/components/LocationConsentDialog.vue'
 
 const highlightedIndex = ref(-1)
 const showSuggestions = ref(false)
-const searchScope = inject<'nl' | 'global'>('searchScope', 'nl')
 
 const {
   search,
@@ -91,7 +90,23 @@ watch(selectedCountry, () => {
   suggestions.value = []
 })
 
-function selectCity(city: { name: string; lat: number; lon: number }) {
+/**
+ * Accept `city` with possibly‐nullable fields,
+ * guard against null, then call fetchWeather.
+ */
+function selectCity(city: {
+  name: string | null
+  lat: number | null
+  lon: number | null
+  country: string
+  state?: string
+}) {
+  // If any required piece is null, bail out
+  if (!city.name || city.lat == null || city.lon == null) {
+    return
+  }
+
+  // Now TypeScript knows these aren’t null
   fetchWeather(String(city.lat), String(city.lon), city.name)
   showSuggestions.value = false
   search.value = city.name

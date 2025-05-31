@@ -21,8 +21,8 @@
         <v-list>
           <v-list-item>
             <v-radio-group v-model="searchScope" column>
-              <v-radio label="Nederland" value="nl" />
-              <v-radio label="Wereldwijd" value="global" />
+              <v-radio label="Nederland" value="NL" />
+              <v-radio label="Wereldwijd" value="Global" />
             </v-radio-group>
           </v-list-item>
         </v-list>
@@ -45,7 +45,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, provide } from 'vue'
+import { provide } from 'vue'
 import { inject } from 'vue'
 
 const searchScope = inject<'nl' | 'global'>('searchScope', 'nl')
