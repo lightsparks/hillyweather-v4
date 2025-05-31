@@ -104,18 +104,18 @@ export function beaufortScale(speedMps: number | undefined): string {
   if (speedMps === undefined || speedMps === null) return '-'
   const kmh = speedMps * 3.6
 
-  if (kmh < 1) return 'windstil, windkracht 1'
-  if (kmh < 6) return 'zeer zwak, windkracht 2'
-  if (kmh < 12) return 'zwak, windkracht 3'
-  if (kmh < 20) return 'vrij matig, windkracht 4'
-  if (kmh < 29) return 'matig, windkracht 5'
-  if (kmh < 39) return 'vrij krachtig, windkracht 6'
-  if (kmh < 50) return 'krachtig, windkracht 7'
-  if (kmh < 62) return 'hard, windkracht 8'
-  if (kmh < 75) return 'stormachtig, windkracht 9'
-  if (kmh < 89) return 'storm, windkracht 10'
-  if (kmh < 103) return 'zware storm, windkracht 11'
-  if (kmh < 118) return 'zeer zware storm, windkracht 12'
+  if (kmh < 1) return 'windstil'              // windkracht 1
+  if (kmh < 6) return 'zeer zwak'             // windkracht 2
+  if (kmh < 12) return 'zwak'                 // windkracht 3
+  if (kmh < 20) return 'vrij matig'           // windkracht 4
+  if (kmh < 29) return 'matig'                // windkracht 5
+  if (kmh < 39) return 'vrij krachtig'        // windkracht 6
+  if (kmh < 50) return 'krachtig'             // windkracht 7
+  if (kmh < 62) return 'hard'                 // windkracht 8
+  if (kmh < 75) return 'stormachtig'          // windkracht 9
+  if (kmh < 89) return 'storm'                // windkracht 10
+  if (kmh < 103) return 'zware storm'         // windkracht 11
+  if (kmh < 118) return 'zeer zware storm'    // windkracht 12
   return 'orkaan'
 }
 
