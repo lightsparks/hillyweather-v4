@@ -22,7 +22,7 @@
           <v-list-item>
             <!-- Now `searchScope` is a Ref, so `v-model` will work correctly. -->
             <v-radio-group v-model="searchScope" column>
-              <v-radio label="Nederland" value="nl" />
+              <v-radio label="Alleen Nederland" value="nl" />
               <v-radio label="Wereldwijd" value="global" />
             </v-radio-group>
           </v-list-item>
