@@ -5,9 +5,11 @@ import vue from '@vitejs/plugin-vue'
 import path from 'path'
 import pkg from './package.json'
 
-export default defineConfig({
-  base: `/${pkg.name}/`,
+// Determine whether we’re in production (i.e. `npm run build`) or dev:
+const isProduction = process.env.NODE_ENV === 'production'
 
+export default defineConfig({
+  base: isProduction ? `/${pkg.name}/` : '/',
   plugins: [vue()],
   resolve: {
     alias: {

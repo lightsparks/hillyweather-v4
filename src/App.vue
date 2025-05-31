@@ -20,15 +20,15 @@
 
         <v-list>
           <v-list-item>
+            <!-- Now `searchScope` is a Ref, so `v-model` will work correctly. -->
             <v-radio-group v-model="searchScope" column>
-              <v-radio label="Nederland" value="NL" />
-              <v-radio label="Wereldwijd" value="Global" />
+              <v-radio label="Nederland" value="nl" />
+              <v-radio label="Wereldwijd" value="global" />
             </v-radio-group>
           </v-list-item>
         </v-list>
       </v-menu>
     </v-app-bar>
-
 
     <v-main>
       <div class="app-wrapper">
@@ -45,14 +45,21 @@
 </template>
 
 <script setup lang="ts">
-import { provide } from 'vue'
-import { inject } from 'vue'
+import { ref, provide } from 'vue'
 
-const searchScope = inject<'nl' | 'global'>('searchScope', 'nl')
-const version = __APP_VERSION__
+/**
+ * Instead of using `inject` here, create a reactive `Ref` with a default of 'nl'.
+ * That way, the radio group will have "Nederland" selected on first load.
+ */
+const searchScope = ref<'nl' | 'global'>('nl')
 
+/**
+ * Provide the reactive reference so that any child component can `inject('searchScope')`
+ * and get the same Ref instance.
+ */
 provide('searchScope', searchScope)
 
+const version = __APP_VERSION__
 </script>
 
 <style scoped>
