@@ -6,6 +6,8 @@ import path from 'path'
 import pkg from './package.json'
 
 export default defineConfig({
+  base: `/${pkg.name}/`,
+
   plugins: [vue()],
   resolve: {
     alias: {
