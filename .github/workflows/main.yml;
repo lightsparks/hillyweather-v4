@@ -29,6 +29,12 @@ jobs:
       - name: Build
         env:
           VITE_OPENWEATHER_API_KEY: ${{ secrets.VITE_OPENWEATHER_API_KEY }}
+          VITE_OPENWEATHER_BASE: ${{ secrets.VITE_OPENWEATHER_BASE }}
+          VITE_OPENWEATHER_EXCLUDE: ${{ secrets.VITE_OPENWEATHER_EXCLUDE }}
+          VITE_FALLBACK_LAT: ${{ secrets.VITE_FALLBACK_LAT }}
+          VITE_FALLBACK_LON: ${{ secrets.VITE_FALLBACK_LON }}
+          VITE_FALLBACK_CITY: ${{ secrets.VITE_FALLBACK_CITY }}
+          VITE_FALLBACK_COUNTRY: ${{ secrets.VITE_FALLBACK_COUNTRY }}
         run: npm run build
 
       - name: Deploy to gh-pages
