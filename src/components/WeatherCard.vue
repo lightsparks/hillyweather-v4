@@ -13,7 +13,7 @@
     <!-- Weather icon image -->
     <div class="weather-icon-wrapper">
       <img
-        :src="`/weather-icons/${data.current.weather[0].icon}.png`"
+        :src="`weather-icons/${data.current.weather[0].icon}.png`"
         :alt="data.current.weather[0].description"
         class="weather-icon"
       />
