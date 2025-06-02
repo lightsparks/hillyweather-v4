@@ -1,18 +1,35 @@
+// src/styles/components/_app-bar.scss
+
 .app-bar-icon-wrapper {
-  height: 85%;
-  aspect-ratio: 1 / 1;
   display: flex;
   align-items: center;
   margin-right: 12px;
   margin-inline-start: 20px;
+
+  /* On very small screens, reduce the left margin */
+  @media (max-width: 600px) {
+    margin-inline-start: 12px;
+  }
 }
 
 .app-bar-icon {
-  height: 100%;
+  /* Give the icon a definite height (matches Vuetify’s default app-bar height) */
+  height: 40px;
   width: auto;
   object-fit: contain;
+
+  /* On small screens, make it slightly smaller */
+  @media (max-width: 600px) {
+    height: 32px;
+  }
 }
 
 .app-bar-title {
   color: white;
+  font-weight: 500;
+  white-space: nowrap;
+
+  @media (max-width: 600px) {
+    font-size: 1.1rem;
+  }
 }
