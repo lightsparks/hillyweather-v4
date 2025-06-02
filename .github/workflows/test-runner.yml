@@ -1,0 +1,8 @@
+name: Test Runner Availability
+on:
+  workflow_dispatch:   # Manual trigger
+jobs:
+  check-ubuntu:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Runner is online at $(date)"
