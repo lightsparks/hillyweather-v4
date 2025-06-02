@@ -5,7 +5,7 @@
       <div class="d-flex align-center">
         <div class="app-bar-icon-wrapper">
           <v-img
-            src="/favicon-512x512.png"
+            src="/app-bar-icon.png"
             alt="App Icon"
             class="app-bar-icon"
             cover
