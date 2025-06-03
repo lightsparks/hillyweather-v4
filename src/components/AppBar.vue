@@ -1,4 +1,3 @@
-
 <template>
   <v-app-bar app color="primary" dark>
     <div class="app-wrapper d-flex align-center justify-space-between">

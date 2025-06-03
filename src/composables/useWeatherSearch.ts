@@ -7,6 +7,15 @@ const apiKey = import.meta.env.VITE_OPENWEATHER_API_KEY
 const exclude = import.meta.env.VITE_OPENWEATHER_EXCLUDE
 const baseUrl = import.meta.env.VITE_OPENWEATHER_BASE
 const CURRENT_LOCATION_LABEL = 'Huidige locatie'
+
+interface GeoNamesResultEntry {
+  name: string
+  lat: number
+  lng: number
+  countryCode: string
+  adminName1: string
+}
+
 const provinceTranslations: Record<string, string> = {
   'North Brabant': 'Noord-Brabant',
   'North Holland': 'Noord-Holland',
@@ -77,21 +86,23 @@ export function useWeatherSearch() {
         const res = await fetch(url)
         const json = await res.json()
 
-        suggestions.value = (json.geonames || []).map((entry: any) => {
-          let rawState = entry.adminName1 as string
+        suggestions.value = ((json.geonames as GeoNamesResultEntry[]) || []).map(
+          (entry) => {
+            let rawState = entry.adminName1
 
-          if (entry.countryCode === 'NL' && rawState in provinceTranslations) {
-            rawState = provinceTranslations[rawState]
-          }
+            if (entry.countryCode === 'NL' && rawState in provinceTranslations) {
+              rawState = provinceTranslations[rawState]
+            }
 
-          return {
-            name: entry.name,
-            lat: entry.lat,
-            lon: entry.lng,
-            country: entry.countryCode,
-            state: rawState,
+            return {
+              name:    entry.name,
+              lat:     entry.lat,
+              lon:     entry.lng,
+              country: entry.countryCode,
+              state:   rawState,
+            }
           }
-        })
+        )
       } catch (err) {
         console.error('GeoNames fetch failed:', err)
       }

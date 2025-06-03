@@ -1,5 +1,3 @@
-HomeView.vue:
-<!-- HomeView.vue -->
 <template>
   <v-container class="home-view" fluid>
     <!-- Search Area -->
@@ -71,7 +69,6 @@ const showSuggestions = ref(false)
 const {
   search,
   suggestions,
-  selectedCountry,
   weatherData,
   selectedCityName,
   resolvedCityName,
@@ -88,11 +85,6 @@ onMounted(initGeolocationFlow)
 
 // whenever the “scope” flips, clear out any typed text + suggestions
 const searchScope = inject<Ref<'nl' | 'global'>>('searchScope', ref<'nl' | 'global'>('nl'))
-
-watch(selectedCountry, () => {
-  search.value = ''
-  suggestions.value = []
-})
 
 watch(searchScope, () => {
   search.value = ''
