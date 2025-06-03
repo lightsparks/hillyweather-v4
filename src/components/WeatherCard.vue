@@ -20,24 +20,41 @@
     </div>
 
     <v-card-text class="weather-description">
-      {{ capitalizeFirst(translateWeatherDescription(data.current.weather[0].description)) }}
+      {{
+        capitalizeFirst(
+          translateWeatherDescription(data.current.weather[0].description),
+        )
+      }}
     </v-card-text>
 
     <v-card-text>
       <v-row justify="center" class="text-no-wrap">
-        <v-col cols="12" sm="6" class="d-flex justify-space-between align-center">
+        <v-col
+          cols="12"
+          sm="6"
+          class="d-flex justify-space-between align-center"
+        >
           <span class="weather-data-label">Temperatuur: </span>
           <v-spacer></v-spacer>
           <span class="weather-data-value">
             {{ Math.round(data.current.temp) }}°C
-            <span v-if="Math.round(data.current.feels_like) !== Math.round(data.current.temp)">
+            <span
+              v-if="
+                Math.round(data.current.feels_like) !==
+                Math.round(data.current.temp)
+              "
+            >
               (feels like {{ Math.round(data.current.feels_like) }}°C)
             </span>
           </span>
         </v-col>
       </v-row>
       <v-row justify="center" class="text-no-wrap">
-        <v-col cols="12" sm="6" class="d-flex justify-space-between align-center">
+        <v-col
+          cols="12"
+          sm="6"
+          class="d-flex justify-space-between align-center"
+        >
           <span class="weather-data-label">Windkracht: </span>
           <v-spacer></v-spacer>
           <span class="weather-data-value">
@@ -48,14 +65,22 @@
         </v-col>
       </v-row>
       <v-row justify="center" class="text-no-wrap">
-        <v-col cols="12" sm="6" class="d-flex justify-space-between align-center">
+        <v-col
+          cols="12"
+          sm="6"
+          class="d-flex justify-space-between align-center"
+        >
           <span class="weather-data-label">UV Index: </span>
           <v-spacer></v-spacer>
           <span class="weather-data-value">{{ data.current.uvi }}</span>
         </v-col>
       </v-row>
       <v-row justify="center" class="text-no-wrap">
-        <v-col cols="12" sm="6" class="d-flex justify-space-between align-center">
+        <v-col
+          cols="12"
+          sm="6"
+          class="d-flex justify-space-between align-center"
+        >
           <span class="weather-data-label">Luchtvochtigheid: </span>
           <v-spacer></v-spacer>
           <span class="weather-data-value">{{ data.current.humidity }}%</span>
