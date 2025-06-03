@@ -1,3 +1,4 @@
+HomeView.vue:
 <!-- HomeView.vue -->
 <template>
   <v-container class="home-view" fluid>
@@ -58,7 +59,7 @@
 </template>
 
 <script setup lang="ts">
-import { watch, onMounted, ref } from 'vue'
+import { watch, onMounted, ref, inject, Ref } from 'vue'
 import { useWeatherSearch } from '@/composables/useWeatherSearch'
 import { useGeolocationConsent } from '@/composables/useGeolocationConsent'
 import WeatherCard from '@/components/WeatherCard.vue'
@@ -85,7 +86,15 @@ const { showLocationConsent, initGeolocationFlow, grantConsent, denyConsent } =
 
 onMounted(initGeolocationFlow)
 
+// whenever the “scope” flips, clear out any typed text + suggestions
+const searchScope = inject<Ref<'nl' | 'global'>>('searchScope', ref<'nl' | 'global'>('nl'))
+
 watch(selectedCountry, () => {
+  search.value = ''
+  suggestions.value = []
+})
+
+watch(searchScope, () => {
   search.value = ''
   suggestions.value = []
 })
@@ -101,19 +110,17 @@ function selectCity(city: {
   country: string
   state?: string
 }) {
-  // If any required piece is null, bail out
   if (!city.name || city.lat == null || city.lon == null) {
     return
   }
-
-  // Now TypeScript knows these aren’t null
   fetchWeather(String(city.lat), String(city.lon), city.name)
   showSuggestions.value = false
   search.value = city.name
 }
 
 function onSearchInput() {
-  fetchCitySuggestions(search.value)
+  // pass both the current search text and the chosen scope
+  fetchCitySuggestions(search.value, searchScope.value)
   showSuggestions.value = true
 }
 </script>
