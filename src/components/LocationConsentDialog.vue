@@ -8,8 +8,8 @@
     <v-card>
       <v-card-title class="text-h6">Use Your Location?</v-card-title>
       <v-card-text>
-        Om nauwkeurig weer te geven, kan deze app uw huidige locatie gebruiken.
-        Jouw Locatiegegevens worden niet opgeslagen of gedeeld.
+        Om het weer nauwkeurig weer te geven, kan deze app jouw huidige locatie gebruiken.
+        Jouw locatiegegevens worden niet opgeslagen of gedeeld.
       </v-card-text>
       <v-card-actions>
         <v-spacer />

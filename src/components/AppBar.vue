@@ -23,7 +23,7 @@
         </div>
       </div>
 
-      <!-- Right side: gear menu -->
+      <!-- Right side: gear menu TODO: swap gear icon for text "NL" or "Wereldwijd"-->
       <v-menu offset-y>
         <template #activator="{ props }">
           <v-btn icon v-bind="props">

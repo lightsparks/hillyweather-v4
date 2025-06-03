@@ -1,9 +1,5 @@
-<!-- src/components/WeatherCard.vue -->
 <template>
-  <!--
-    We wrap everything in a single <v-container> so that we can define rows/columns
-    for responsive breakpoints.
-  -->
+  <!-- Wrap everything in a single v-container so that we can define rows/columns for responsive breakpoints. -->
   <v-container fluid class="pa-0">
     <!-- ========== ROW 1: Section A (location + date) ========== -->
     <v-row>
@@ -57,7 +53,7 @@
         </v-card>
       </v-col>
 
-      <!-- Section C: remaining current stats -->
+      <!-- Section C: current stats -->
       <v-col cols="12" md="6">
         <v-card class="ma-3 pa-4">
           <v-card-text>

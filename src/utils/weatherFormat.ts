@@ -1,5 +1,3 @@
-// src/utils/weatherFormat.ts
-
 /**
  * Convert a Unix timestamp (seconds) into a localized HH:mm string.
  */
@@ -156,7 +154,7 @@ export function translateWeatherDescription(
     'thunderstorm with rain': 'onweer met regen',
     'thunderstorm with heavy rain': 'onweer met zware regen',
     'light thunderstorm': 'licht onweer',
-    thunderstorm: 'onweer',
+    'thunderstorm': 'onweer',
     'heavy thunderstorm': 'zwaar onweer',
     'ragged thunderstorm': 'onregelmatig onweer',
     'thunderstorm with light drizzle': 'onweer met lichte motregen',
@@ -200,16 +198,16 @@ export function translateWeatherDescription(
     'heavy shower snow': 'zware sneeuwbui',
 
     // Atmosphere
-    mist: 'mist',
-    smoke: 'rook',
-    haze: 'nevel',
+    'mist': 'mist',
+    'smoke': 'rook',
+    'haze': 'nevel',
     'sand/dust whirls': 'opwervelend zand/stof',
-    fog: 'dichte mist',
-    sand: 'zand',
-    dust: 'stof',
+    'fog': 'dichte mist',
+    'sand': 'zand',
+    'dust': 'stof',
     'volcanic ash': 'vulkanische as',
-    squalls: 'windvlagen',
-    tornado: 'tornado',
+    'squalls': 'windvlagen',
+    'tornado': 'tornado',
 
     // Clear & Clouds
     'clear sky': 'heldere lucht',
