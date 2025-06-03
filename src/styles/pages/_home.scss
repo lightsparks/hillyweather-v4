@@ -3,9 +3,12 @@
 .home-view {
   display: flex;
   flex-direction: column;
-  /* 100vh minus app-bar + gutters */
-  height: calc(100vh - 64px - 2rem - 2rem);
+  min-height: calc(100vh - 64px - 2rem);
   padding: 1rem 0;
+  width: 100%;
+  box-sizing: border-box;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 .search-area {
