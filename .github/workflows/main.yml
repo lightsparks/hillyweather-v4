@@ -35,6 +35,7 @@ jobs:
           VITE_FALLBACK_LON: ${{ secrets.VITE_FALLBACK_LON }}
           VITE_FALLBACK_CITY: ${{ secrets.VITE_FALLBACK_CITY }}
           VITE_FALLBACK_COUNTRY: ${{ secrets.VITE_FALLBACK_COUNTRY }}
+          VITE_GEONAMES_USERNAME: ${{ secrets.VITE_GEONAMES_USERNAME }}
         run: npm run build
 
       - name: Deploy to gh-pages
