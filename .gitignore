@@ -25,5 +25,7 @@ dist-ssr
 
 node_modules/
 dist/
+
 .env
 .env.local
+src/components/weather-data.json
