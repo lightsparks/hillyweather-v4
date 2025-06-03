@@ -21,8 +21,7 @@ import { ref, provide } from 'vue'
 import AppBar from '@/components/AppBar.vue'
 
 const searchScope = ref<'nl' | 'global'>('nl')
-
 provide('searchScope', searchScope)
-
 const version = __APP_VERSION__
+
 </script>

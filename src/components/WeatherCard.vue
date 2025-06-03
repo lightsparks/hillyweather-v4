@@ -19,7 +19,9 @@
       />
     </div>
 
-    <v-card-text class="weather-description">{{ capitalizeFirst(translateWeatherDescription(data.current.weather[0].description)) }}</v-card-text>
+    <v-card-text class="weather-description">
+      {{ capitalizeFirst(translateWeatherDescription(data.current.weather[0].description)) }}
+    </v-card-text>
 
     <v-card-text>
       <v-row justify="center" class="text-no-wrap">
@@ -41,7 +43,8 @@
           <span class="weather-data-value">
             {{ windArrowFromDegrees(data.current.wind_deg) }}
             {{ windAbbrevFromDegrees(data.current.wind_deg) }}
-            {{ beaufortNumber(data.current.wind_speed) }}</span>
+            {{ beaufortNumber(data.current.wind_speed) }}
+          </span>
         </v-col>
       </v-row>
       <v-row justify="center" class="text-no-wrap">
@@ -68,7 +71,7 @@ import {
   translateWeatherDescription,
   windArrowFromDegrees,
   windAbbrevFromDegrees,
-  beaufortNumber
+  beaufortNumber,
 } from '@/utils/weatherFormat'
 
 defineProps<{
@@ -80,5 +83,4 @@ defineProps<{
 function capitalizeFirst(str: string) {
   return str.charAt(0).toUpperCase() + str.slice(1)
 }
-
 </script>
