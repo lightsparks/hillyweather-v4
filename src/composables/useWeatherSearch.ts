@@ -86,23 +86,23 @@ export function useWeatherSearch() {
         const res = await fetch(url)
         const json = await res.json()
 
-        suggestions.value = ((json.geonames as GeoNamesResultEntry[]) || []).map(
-          (entry) => {
-            let rawState = entry.adminName1
+        suggestions.value = (
+          (json.geonames as GeoNamesResultEntry[]) || []
+        ).map((entry) => {
+          let rawState = entry.adminName1
 
-            if (entry.countryCode === 'NL' && rawState in provinceTranslations) {
-              rawState = provinceTranslations[rawState]
-            }
-
-            return {
-              name:    entry.name,
-              lat:     entry.lat,
-              lon:     entry.lng,
-              country: entry.countryCode,
-              state:   rawState,
-            }
+          if (entry.countryCode === 'NL' && rawState in provinceTranslations) {
+            rawState = provinceTranslations[rawState]
           }
-        )
+
+          return {
+            name: entry.name,
+            lat: entry.lat,
+            lon: entry.lng,
+            country: entry.countryCode,
+            state: rawState,
+          }
+        })
       } catch (err) {
         console.error('GeoNames fetch failed:', err)
       }

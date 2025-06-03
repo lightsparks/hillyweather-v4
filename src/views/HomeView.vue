@@ -84,7 +84,10 @@ const { showLocationConsent, initGeolocationFlow, grantConsent, denyConsent } =
 onMounted(initGeolocationFlow)
 
 // whenever the “scope” flips, clear out any typed text + suggestions
-const searchScope = inject<Ref<'nl' | 'global'>>('searchScope', ref<'nl' | 'global'>('nl'))
+const searchScope = inject<Ref<'nl' | 'global'>>(
+  'searchScope',
+  ref<'nl' | 'global'>('nl'),
+)
 
 watch(searchScope, () => {
   search.value = ''
@@ -115,4 +118,5 @@ function onSearchInput() {
   fetchCitySuggestions(search.value, searchScope.value)
   showSuggestions.value = true
 }
+
 </script>

@@ -38,5 +38,7 @@
 
 <script setup lang="ts">
 import { inject } from 'vue'
+
 const searchScope = inject<'nl' | 'global'>('searchScope', 'nl')
+
 </script>

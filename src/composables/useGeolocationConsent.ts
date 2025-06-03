@@ -8,7 +8,7 @@ import { ref } from 'vue'
  */
 export function useGeolocationConsent(
   fetchWeather: (lat: string, lon: string, label: string) => void,
-  useMyLocation: () => void
+  useMyLocation: () => void,
 ) {
   const showLocationConsent = ref(false)
 
@@ -20,7 +20,9 @@ export function useGeolocationConsent(
   async function initGeolocationFlow() {
     const storedConsent = localStorage.getItem('locationConsent')
 
-    const permissionStatus = await navigator.permissions?.query({ name: 'geolocation' })
+    const permissionStatus = await navigator.permissions?.query({
+      name: 'geolocation',
+    })
 
     if (permissionStatus?.state === 'granted') {
       useMyLocation()
@@ -55,7 +57,11 @@ export function useGeolocationConsent(
   }
 
   function fetchFallback() {
-    fetchWeather(fallbackLat, fallbackLon, `${fallbackCity}, ${fallbackCountry}`)
+    fetchWeather(
+      fallbackLat,
+      fallbackLon,
+      `${fallbackCity}, ${fallbackCountry}`,
+    )
   }
 
   return {
